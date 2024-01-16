@@ -43,7 +43,6 @@ export class DialogVerClienteComponent {
         municipio: '',
         estado: '',
       }
-      console.table(this.domicilio)
   }
 
   onNoClick = (): void => {

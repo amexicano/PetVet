@@ -60,7 +60,7 @@
             <h4>Selecciona una Fecha:</h4>
             <mat-form-field>
                 <mat-label>Fecha de Ingreso</mat-label>
-                <input matInput [matDatepicker]="ingreso" formControlName="fechaIngreso">
+                <input matInput [matDatepicker]="ingreso" [max]="maxDate" formControlName="fechaIngreso">
                 <mat-hint>MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle  matIconSuffix [for]="ingreso"></mat-datepicker-toggle>
                 <mat-datepicker #ingreso></mat-datepicker>

@@ -48,7 +48,8 @@ export class ClientesService {
   }
 
   getClienteByCURP(curp: string): Cliente {
-    return this._DATA.find((cliente) => cliente.curp === curp)!;
+    curp = curp.toLowerCase();
+    return this._DATA.find((cliente) => cliente.curp.toLowerCase() === curp)!;
   }
 
 }

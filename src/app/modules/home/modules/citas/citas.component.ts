@@ -36,7 +36,7 @@ export class CitasComponent {
   nuevaCita = (): void => {
     const dialogRef = this.dialog.open(DialogCitaComponent, {
       width: '85%',
-      data: { action: 'Agregar Cita', date: undefined }
+      data: { action: 'Agregar Cita', date: null }
     });
 
     dialogRef.afterClosed().subscribe(result => {

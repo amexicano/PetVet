@@ -5,7 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { RolService } from '../../../../../../services/rol.service';
 import { Cliente } from '../../../../../../interfaces/cliente.interface';
 import { ClientesService } from '../../../../../../services/clientes.service';
 import { DialogClienteComponent } from '../dialog-cliente/dialog-cliente.component';
@@ -33,7 +32,6 @@ export class TableClientesComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private clienteService: ClientesService,
-    public rolService: RolService,
     public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<Cliente>(this.clienteService.getClientes());
   }
@@ -68,10 +66,6 @@ export class TableClientesComponent {
   updateTable(): void {
     this.dataSource = new MatTableDataSource<Cliente>(this.clienteService.getClientes());
     this.dataSource.paginator = this.paginator;
-  }
-
-  getRolbyId(id: number): string {
-    return this.rolService.getRolbyId(id).nombre;
   }
 
 }

@@ -6,8 +6,8 @@
         <span>Correo: <b>{{data.email}}</b></span>
         <span>Rol: <b>{{getRolbyId(data.rol)}}</b> </span>
         <span>Sexo: <b>{{getSexo(data.sexo)}}</b> </span>
-        <span>Fecha de Nacimiento: <b>{{data.fechaNacimiento | date:'shortDate'}}</b></span>
-        <span>Fecha de Ingreso: <b>{{data.fechaIngreso | date:'shortDate'}}</b></span>
+        <span>Fecha de Nacimiento: <b>{{data.fechaNacimiento | date:'dd/MM/yyyy'}}</b></span>
+        <span>Fecha de Ingreso: <b>{{data.fechaIngreso | date:'dd/MM/yyyy'}}</b></span>
         <span>Telefono: <b>{{data.telefono}}</b></span>
         <span>Activo: <b>{{data.activo ? 'Si' : 'No'}}</b></span>
 </mat-dialog-content>

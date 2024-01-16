@@ -32,11 +32,11 @@
                 <mat-form-field>
                     <mat-label>Selecciona un Sexo</mat-label>
                     <mat-select formControlName="sexo">
-                        <mat-option *ngFor="let sexo of sexos" [value]="sexo.id">{{sexo.nombre}}</mat-option>
+                        @for(sexo of sexoService.getSexos(); track sexo){
+                        <mat-option [value]="sexo.id">{{sexo.nombre}}</mat-option>
+                        }
                     </mat-select>
                 </mat-form-field>
-            </section>
-            <section class="column">
                 <h3>Ingresa tu Telefono Fijo:</h3>
                 <mat-form-field appearance="fill">
                     <mat-label>Telefono Fijo</mat-label>
@@ -46,6 +46,28 @@
                 <mat-form-field appearance="fill">
                     <mat-label>Telefono Celular</mat-label>
                     <input type="tel" matInput autocomplete="off" formControlName="telefono">
+                </mat-form-field>
+            </section>
+            <section class="column">
+                <h3>Ingresa tu Calle:</h3>
+                <mat-form-field appearance="fill">
+                    <mat-label>Calle</mat-label>
+                    <input type="text" matInput autocomplete="off" formControlName="calle">
+                </mat-form-field>
+                <h3>Ingresa tu Número Exterior:</h3>
+                <mat-form-field appearance="fill">
+                    <mat-label>Número Exterior</mat-label>
+                    <input type="text" matInput autocomplete="off" formControlName="exterior">
+                </mat-form-field>
+                <h3>Ingresa tu Número Interior:</h3>
+                <mat-form-field appearance="fill">
+                    <mat-label>Número Interior</mat-label>
+                    <input type="text" matInput autocomplete="off" formControlName="interior">
+                </mat-form-field>
+                <h3>Ingresa tu Código Postal:</h3>
+                <mat-form-field appearance="fill">
+                    <mat-label>Código Postal</mat-label>
+                    <input type="email" matInput autocomplete="off" formControlName="postal">
                 </mat-form-field>
             </section>
         </section>

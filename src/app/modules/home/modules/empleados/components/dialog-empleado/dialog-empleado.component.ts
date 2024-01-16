@@ -45,13 +45,9 @@ interface ActionEmpleado{
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [
-    EmpleadosService,
-    RolService,
-    SexoService
-  ]
 })
 export class DialogEmpleadoComponent {
+  maxDate!: Date;
   form_empleado: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<DialogEmpleadoComponent>,
@@ -68,8 +64,8 @@ export class DialogEmpleadoComponent {
           segundoap: [data.empleado?.segundoApellido, [Validators.required, Validators.pattern('[a-zA-Z\u00f1\u00d1 ]*')]],
           correo: [data.empleado?.email, [Validators.required, Validators.email]],
           telefono: [data.empleado?.telefono, [Validators.required]],
-          fechaNacimiento: [data.empleado?.fechaNacimiento ?? '', [Validators.required]],
-          fechaIngreso: [data.empleado?.fechaIngreso ?? new Date(), [Validators.required]],
+          fechaNacimiento: [data.empleado?.fechaNacimiento, [Validators.required]],
+          fechaIngreso: [data.empleado?.fechaIngreso, [Validators.required]],
           rol: [data.empleado?.rol, [Validators.required]],
           sexo: [data.empleado?.sexo, [Validators.required]],
           activo: [data.empleado?.activo, []],
