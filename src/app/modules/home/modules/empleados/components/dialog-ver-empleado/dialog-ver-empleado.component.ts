@@ -1,11 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { Empleado } from '../../../../interfaces/empleado.interface';
-import { Rol } from '../../../../interfaces/rol.interface';
-import { RolService } from '../../../../services/rol.service';
+import { Empleado } from '../../../../../../interfaces/empleado.interface';
+import { Rol } from '../../../../../../interfaces/rol.interface';
+import { RolService } from '../../../../../../services/rol.service';
 import { MatButtonModule } from '@angular/material/button';
-import { SexoService } from '../../../../services/sexo.service';
+import { SexoService } from '../../../../../../services/sexo.service';
 
 @Component({
   selector: 'app-dialog-ver-empleado',

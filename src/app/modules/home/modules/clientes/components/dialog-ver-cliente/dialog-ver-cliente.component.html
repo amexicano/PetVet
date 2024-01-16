@@ -29,8 +29,13 @@
 
     <section>
         <h2>Información de las Mascotas</h2>
-        <span *ngIf="mascotas.length == 0">No existen mascotas registradas</span>
-        <app-mostrar-mascota *ngFor="let mascota of mascotas" [mascota]="mascota"></app-mostrar-mascota>
+        @if (mascotas.length == 0) {
+            <span>No existen mascotas registradas</span>
+        } @else {
+            <mat-chip-set>
+                <app-mostrar-mascota *ngFor="let mascota of mascotas" [mascota]="mascota"></app-mostrar-mascota>
+            </mat-chip-set>
+        }
     </section>
 </mat-dialog-content>
 <mat-dialog-content *ngIf="!data">

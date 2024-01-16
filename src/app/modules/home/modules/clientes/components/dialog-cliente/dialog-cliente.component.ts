@@ -7,9 +7,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Cliente } from '../../../../interfaces/cliente.interface';
-import { SexoService } from '../../../../services/sexo.service';
-import { Sexo } from '../../../../interfaces/sexo.interface';
+import { Cliente } from '../../../../../../interfaces/cliente.interface';
+import { SexoService } from '../../../../../../services/sexo.service';
+import { Sexo } from '../../../../../../interfaces/sexo.interface';
 
 interface ActionCliente{
   cliente: Cliente,
@@ -31,7 +31,6 @@ interface ActionCliente{
     MatInputModule,
     ReactiveFormsModule,
     FormsModule,
-
   ]
 })
 export class DialogClienteComponent {

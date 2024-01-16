@@ -16,11 +16,11 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
 // Interface Empleado
-import { Empleado } from '../../../../interfaces/empleado.interface';
+import { Empleado } from '../../../../../../interfaces/empleado.interface';
 //Services
-import { EmpleadosService } from '../../../../services/empleados.service';
-import { RolService } from '../../../../services/rol.service';
-import { SexoService } from '../../../../services/sexo.service';
+import { EmpleadosService } from '../../../../../../services/empleados.service';
+import { RolService } from '../../../../../../services/rol.service';
+import { SexoService } from '../../../../../../services/sexo.service';
 
 interface ActionEmpleado{
   empleado: Empleado,
@@ -44,6 +44,11 @@ interface ActionEmpleado{
     MatNativeDateModule,
     ReactiveFormsModule,
     FormsModule,
+  ],
+  providers: [
+    EmpleadosService,
+    RolService,
+    SexoService
   ]
 })
 export class DialogEmpleadoComponent {
@@ -55,20 +60,36 @@ export class DialogEmpleadoComponent {
      public rolService: RolService,
      public sexoService: SexoService,
      private fb: FormBuilder,) {
+      if (data.empleado){
+        this.form_empleado = fb.group({
+          id: [data.empleado?.id, []],
+          nombre: [data.empleado?.nombre, [Validators.required, Validators.pattern('[a-zA-Z\u00f1\u00d1 ]*')]],
+          primerap: [data.empleado?.primerApellido, [Validators.required, Validators.pattern('[a-zA-Z\u00f1\u00d1 ]*')]],
+          segundoap: [data.empleado?.segundoApellido, [Validators.required, Validators.pattern('[a-zA-Z\u00f1\u00d1 ]*')]],
+          correo: [data.empleado?.email, [Validators.required, Validators.email]],
+          telefono: [data.empleado?.telefono, [Validators.required]],
+          fechaNacimiento: [data.empleado?.fechaNacimiento ?? '', [Validators.required]],
+          fechaIngreso: [data.empleado?.fechaIngreso ?? new Date(), [Validators.required]],
+          rol: [data.empleado?.rol, [Validators.required]],
+          sexo: [data.empleado?.sexo, [Validators.required]],
+          activo: [data.empleado?.activo, []],
+        });
+      } else {
+        this.form_empleado = fb.group({
+          id: [0, []],
+          nombre: ['', [Validators.required, Validators.pattern('[a-zA-Z\u00f1\u00d1 ]*')]],
+          primerap: ['', [Validators.required, Validators.pattern('[a-zA-Z\u00f1\u00d1 ]*')]],
+          segundoap: ['', [Validators.required, Validators.pattern('[a-zA-Z\u00f1\u00d1 ]*')]],
+          correo: ['', [Validators.required, Validators.email]],
+          telefono: ['', [Validators.required]],
+          fechaNacimiento: ['', [Validators.required]],
+          fechaIngreso: [new Date(), [Validators.required]],
+          rol: [0, [Validators.required]],
+          sexo: [0, [Validators.required]],
+          activo: [false, []],
+        });
+      }
 
-      this.form_empleado = fb.group({
-        id: [data.empleado?.id, []],
-        nombre: [data.empleado?.nombre, [Validators.required, Validators.pattern('[a-zA-Z\u00f1\u00d1 ]*')]],
-        primerap: [data.empleado?.primerApellido, [Validators.required, Validators.pattern('[a-zA-Z\u00f1\u00d1 ]*')]],
-        segundoap: [data.empleado?.segundoApellido, [Validators.required, Validators.pattern('[a-zA-Z\u00f1\u00d1 ]*')]],
-        correo: [data.empleado?.email, [Validators.required, Validators.email]],
-        telefono: [data.empleado?.telefono, [Validators.required]],
-        fechaNacimiento: [data.empleado?.fechaNacimiento, [Validators.required]],
-        fechaIngreso: [data.empleado?.fechaIngreso ?? new Date(), [Validators.required]],
-        rol: [data.empleado?.rol, [Validators.required]],
-        sexo: [data.empleado?.sexo, [Validators.required]],
-        activo: [data.empleado?.activo, []],
-      });
   }
   
   saveEmpleado = (): void => {

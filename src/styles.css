@@ -3,6 +3,11 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.mat-calendar-body-selected {
+    background: rgba(33, 70,100, 0.4) !important;
+    color: white !important;
+}
+
 .indicador-verde {
     background: rgba(10, 128, 0, 0.75) !important;
     border-radius: 100% !important;
@@ -16,4 +21,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .indicador-rojo {
     background: rgba(255, 0, 0, 0.75) !important;
     border-radius: 100% !important;
+}
+
+/* Fix position datepicker z-index*/
+.cdk-overlay-container {
+    z-index: 100 !important;
 }

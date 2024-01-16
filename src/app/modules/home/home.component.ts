@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ContentCardComponent } from '../../components/content-card/content-card.component';
 import { SliderComponent } from '../../modules/home/components/slider/slider.component';
-import { Slider } from '../../modules/home/interfaces/slider.interface';
+import { Slider } from '../../interfaces/slider.interface';
 
 @Component({
   selector: 'app-home',

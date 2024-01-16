@@ -2,13 +2,14 @@ import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { Cliente } from '../../../../interfaces/cliente.interface';
-import { SexoService } from '../../../../services/sexo.service';
-import { Domicilio } from '../../../../interfaces/domicilio.interface';
-import { DomicilioService } from '../../../../services/domicilio.service';
-import { Mascota } from '../../../../interfaces/mascota.interface';
+import { Cliente } from '../../../../../../interfaces/cliente.interface';
+import { SexoService } from '../../../../../../services/sexo.service';
+import { Domicilio } from '../../../../../../interfaces/domicilio.interface';
+import { DomicilioService } from '../../../../../../services/domicilio.service';
+import { Mascota } from '../../../../../../interfaces/mascota.interface';
 import { MostrarMascotaComponent } from '../../../../components/mostrar-mascota/mostrar-mascota.component';
-import { MascotaService } from '../../../../services/mascota.service';
+import { MascotaService } from '../../../../../../services/mascota.service';
+import { MatChipsModule } from '@angular/material/chips';
 @Component({
   selector: 'app-dialog-ver-cliente',
   standalone: true,
@@ -18,6 +19,7 @@ import { MascotaService } from '../../../../services/mascota.service';
     CommonModule,
     MatDialogModule,
     MatButtonModule,
+    MatChipsModule,
     MostrarMascotaComponent
   ],
 })

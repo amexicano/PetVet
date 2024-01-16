@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Injector, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 //Material Modules
 import { MatTableModule } from '@angular/material/table';
@@ -13,9 +13,9 @@ import { MatPaginator } from '@angular/material/paginator';
 //Components
 import { DialogEmpleadoComponent } from '../dialog-empleado/dialog-empleado.component';
 // Interfaces & Services
-import { Empleado } from '../../../../interfaces/empleado.interface';
-import { EmpleadosService } from '../../../../services/empleados.service';
-import { RolService } from '../../../../services/rol.service';
+import { Empleado } from '../../../../../../interfaces/empleado.interface';
+import { EmpleadosService } from '../../../../../../services/empleados.service';
+import { RolService } from '../../../../../../services/rol.service';
 import { DialogVerEmpleadoComponent } from '../dialog-ver-empleado/dialog-ver-empleado.component';
 
 @Component({
@@ -40,7 +40,8 @@ export class TableEmpleadosComponent {
 
   constructor(private empleadosService: EmpleadosService,
     public rolService: RolService,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    private injector: Injector) {
     this.dataSource = new MatTableDataSource<Empleado>(this.empleadosService.getEmpleados());
   }
 
@@ -52,7 +53,8 @@ export class TableEmpleadosComponent {
     const dialogRef = this.dialog.open(DialogEmpleadoComponent, {
       width: '95%',
       data: {action: 'Editar Empleado', empleado: empleado},
-    });
+      injector: this.injector,
+    }, );
 
     dialogRef.afterClosed().subscribe(result => {
       this.updateTable();

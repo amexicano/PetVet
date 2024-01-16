@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../interfaces/user';
-import { EmpleadosService } from '../modules/home/services/empleados.service';
-import { Empleado } from '../modules/home/interfaces/empleado.interface';
+import { EmpleadosService } from './empleados.service';
+import { Empleado } from '../interfaces/empleado.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -25,16 +25,16 @@ export class AccountService {
   }
 
   login(username: string, password: string) {
-    let user = { token: 'fake-token', tipo: -1}
+    let user = { token: 'fake-token', tipo: 0}
     
     if (username === 'admin') {
       if (password === 'admin') {
-          user.tipo = 0;
           localStorage.setItem('user', JSON.stringify(user));
           this.userSubject.next(user);
           return this.user;
       } 
-    } 
+    }
+    
     if(password == 'PetVet@User') {
       // Buscar en empleados
       let resultado: Empleado | undefined = this.empleadoService.getEmpleados()

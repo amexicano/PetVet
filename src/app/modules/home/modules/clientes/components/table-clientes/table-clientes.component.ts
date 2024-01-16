@@ -5,9 +5,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { RolService } from '../../../../services/rol.service';
-import { Cliente } from '../../../../interfaces/cliente.interface';
-import { ClientesService } from '../../../../services/clientes.service';
+import { RolService } from '../../../../../../services/rol.service';
+import { Cliente } from '../../../../../../interfaces/cliente.interface';
+import { ClientesService } from '../../../../../../services/clientes.service';
 import { DialogClienteComponent } from '../dialog-cliente/dialog-cliente.component';
 import { DialogVerClienteComponent } from '../dialog-ver-cliente/dialog-ver-cliente.component';
 

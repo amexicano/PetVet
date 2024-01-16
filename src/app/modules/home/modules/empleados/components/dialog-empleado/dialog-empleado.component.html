@@ -2,63 +2,67 @@
     <h1 mat-dialog-title>{{data.action}}</h1>
     <mat-dialog-content>
         <section>
-            <h3>Ingresa tu Nombre:</h3>
+            <h4>Ingresa tu Nombre:</h4>
             <mat-form-field appearance="fill">
                 <mat-label>Nombre</mat-label>
                 <input type="text" matInput autocomplete="off" formControlName="nombre">
             </mat-form-field>
-            <h3>Ingresa tu Primer Apellido:</h3>
+            <h4>Ingresa tu Primer Apellido:</h4>
             <mat-form-field appearance="fill">
                 <mat-label>Primer Apellido</mat-label>
                 <input type="text" matInput autocomplete="off" formControlName="primerap">
             </mat-form-field>
-            <h3>Ingresa tu Segundo Apellido:</h3>
+            <h4>Ingresa tu Segundo Apellido:</h4>
             <mat-form-field appearance="fill">
                 <mat-label>Segundo Apellido</mat-label>
                 <input type="text" matInput autocomplete="off" formControlName="segundoap">
             </mat-form-field>
-            <h3>Ingresa tu Correo:</h3>
+            <h4>Ingresa tu Correo:</h4>
             <mat-form-field appearance="fill">
                 <mat-label>Correo</mat-label>
                 <input type="email" matInput autocomplete="off" formControlName="correo">
             </mat-form-field>
-            <!-- <h3>Selecciona Sexo:</h3>
+            <h4>Selecciona Sexo:</h4>
             <mat-form-field>
                 <mat-label>Sexo</mat-label>
                 <mat-select formControlName="sexo" name="sexo">
-                    <mat-option *ngFor="let sexo of sexoService.getSexos()" [value]="sexo.id">{{sexo.nombre}}</mat-option>
+                    @for (sexo of sexoService.getSexos(); track sexo) {
+                        <mat-option [value]="sexo.id">{{sexo.nombre}}</mat-option>
+                    }
                 </mat-select>
-            </mat-form-field> -->
+            </mat-form-field>
 
         </section>
             
         <section>
-            <!-- <h3>Selecciona un Rol:</h3>
+            <h4>Selecciona un Rol:</h4>
             <mat-form-field>
                 <mat-label>Rol</mat-label>
-                <mat-select formControlName="rol" name="rol">
-                    <mat-option *ngFor="let rol of rolService.getRoles()" [value]="rol.id">{{rol.nombre}}</mat-option>
+                <mat-select id="rol" formControlName="rol" name="rol">
+                    @for (rol of rolService.getRoles(); track rol) {
+                        <mat-option [value]="rol.id">{{rol.nombre}}</mat-option>
+                    }
                 </mat-select>
-            </mat-form-field> -->
-            <h3>Ingresa tu Telefono:</h3>
+            </mat-form-field>
+            <h4>Ingresa tu Telefono:</h4>
             <mat-form-field appearance="fill">
                 <mat-label>Telefono</mat-label>
                 <input type="tel" matInput autocomplete="off" formControlName="telefono">
             </mat-form-field>
-            <h3>Selecciona una Fecha:</h3>
+            <h4>Selecciona una Fecha:</h4>
             <mat-form-field>
                 <mat-label>Fecha de Nacimiento</mat-label>
                 <input matInput [matDatepicker]="nacimiento" formControlName="fechaNacimiento">
-                <mat-hint>DD/MM/YYYY</mat-hint>
-                <mat-datepicker-toogle matIconSuffix [attr.for]="nacimiento"></mat-datepicker-toogle>
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="nacimiento"></mat-datepicker-toggle>
                 <mat-datepicker #nacimiento></mat-datepicker>
             </mat-form-field>
-            <h3>Selecciona una Fecha:</h3>
+            <h4>Selecciona una Fecha:</h4>
             <mat-form-field>
                 <mat-label>Fecha de Ingreso</mat-label>
                 <input matInput [matDatepicker]="ingreso" formControlName="fechaIngreso">
-                <mat-hint>DD/MM/YYYY</mat-hint>
-                <mat-datepicker-toogle matIconSuffix [attr.for]="ingreso"></mat-datepicker-toogle>
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle  matIconSuffix [for]="ingreso"></mat-datepicker-toggle>
                 <mat-datepicker #ingreso></mat-datepicker>
             </mat-form-field>
             <mat-checkbox formControlName="activo" color="primary" labelPosition="before">Activo:</mat-checkbox>

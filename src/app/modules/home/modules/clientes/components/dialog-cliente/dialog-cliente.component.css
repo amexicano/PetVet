@@ -1,11 +1,16 @@
 mat-dialog-content {
     display: flex;
+    flex-direction: column;
+}
+
+.wrapper {
+    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
 }
 
-section {
+.column {
     display: flex;
     flex-direction: column;
     flex-basis: 100%;

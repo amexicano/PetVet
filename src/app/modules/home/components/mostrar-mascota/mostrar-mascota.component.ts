@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { Mascota } from '../../interfaces/mascota.interface';
+import { Mascota } from '../../../../interfaces/mascota.interface';
 import { MatIconModule } from '@angular/material/icon';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-mostrar-mascota',
@@ -9,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./mostrar-mascota.component.css'],
   imports: [
     MatIconModule,
+    MatChipsModule,
   ],
 
 })

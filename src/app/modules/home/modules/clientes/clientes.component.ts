@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ContentCardComponent } from '../../../../components/content-card/content-card.component';
 import { SearchingBoxComponent } from '../../components/searching-box/searching-box.component';
 import { TableClientesComponent } from './components/table-clientes/table-clientes.component';
-import { ClientesService } from '../../services/clientes.service';
+import { ClientesService } from '../../../../services/clientes.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogVerClienteComponent } from './components/dialog-ver-cliente/dialog-ver-cliente.component';
 import { DialogClienteComponent } from './components/dialog-cliente/dialog-cliente.component';
