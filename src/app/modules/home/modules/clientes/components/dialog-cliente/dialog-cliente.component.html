@@ -1,5 +1,5 @@
 <form [formGroup]="form_cliente">
-    <h1 mat-dialog-title>{{action}}</h1>
+    <h1 mat-dialog-title>{{data.action}}</h1>
     <mat-dialog-content>
         <section class="wrapper">
             <section class="column">
@@ -69,13 +69,41 @@
                     <mat-label>Código Postal</mat-label>
                     <input type="email" matInput autocomplete="off" formControlName="postal">
                 </mat-form-field>
+                <h3>Selecciona un Estado:</h3>
+                <mat-form-field>
+                    <mat-label>Estado</mat-label>
+                    <mat-select [formControl]="estadoControl">
+                        @for(estado of estadoService.getEstados(); track estado){
+                        <mat-option [value]="estado.id">{{estado.nombre}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                <h3>Selecciona un Municipio:</h3>
+                <mat-form-field>
+                    <mat-label>Municipio</mat-label>
+                    <mat-select [formControl]="municipioControl">
+                        @for(municipio of municipios; track municipio){
+                        <mat-option [value]="municipio.id">{{municipio.nombre}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                <h3>Selecciona un Localidad:</h3>
+                <mat-form-field>
+                    <mat-label>Localidad</mat-label>
+                    <mat-select [formControl]="localidadControl">
+                        @for(localidad of localidades; track localidad){
+                        <mat-option [value]="localidad.id">{{localidad.nombre}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
             </section>
         </section>
         <h1>Mascotas</h1>
     </mat-dialog-content>
     <mat-dialog-actions>
         <button mat-button type="submit" (click)="saveCliente()" mat-raised-button color="primary"
-            [disabled]="form_cliente.invalid">{{action}}</button>
+            [disabled]="form_cliente.invalid && estadoControl.invalid && municipioControl.invalid && localidadControl.invalid">{{data.action}}</button>
         <button mat-button color="warn" (click)="this.dialogRef.close()">Cancelar</button>
     </mat-dialog-actions>
 </form>

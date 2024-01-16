@@ -5,8 +5,5 @@ export interface Domicilio {
     numeroInterior: string;
     codigoPostal: string;
     // Datos de la relacion con la tabla localidad de INEGI AGEEML Octubre 2020
-    //localidad:  id;
-    colonia: string;
-    municipio: string;
-    estado: string;
+    localidad:  number;
 }

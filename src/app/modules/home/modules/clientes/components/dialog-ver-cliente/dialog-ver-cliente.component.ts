@@ -10,6 +10,12 @@ import { Mascota } from '../../../../../../interfaces/mascota.interface';
 import { MostrarMascotaComponent } from '../../../../components/mostrar-mascota/mostrar-mascota.component';
 import { MascotaService } from '../../../../../../services/mascota.service';
 import { MatChipsModule } from '@angular/material/chips';
+import { Localidad } from '../../../../../../interfaces/localidad.interface';
+import { LocalidadService } from '../../../../../../services/localidad.service';
+import { MunicipioService } from '../../../../../../services/municipio.service';
+import { EstadoService } from '../../../../../../services/estado.service';
+import { Municipio } from '../../../../../../interfaces/municipio.interface';
+import { Estado } from '../../../../../../interfaces/estado.interface';
 @Component({
   selector: 'app-dialog-ver-cliente',
   standalone: true,
@@ -24,12 +30,19 @@ import { MatChipsModule } from '@angular/material/chips';
   ],
 })
 export class DialogVerClienteComponent {
-  domicilio: Domicilio
   mascotas!: Mascota[]
+  domicilio!: Domicilio
+  localidad!: Localidad
+  municipio!: Municipio
+  estado!: Estado
+
   constructor(public dialogRef: MatDialogRef<DialogVerClienteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Cliente,
     public sexoService: SexoService,
     public domicilioService: DomicilioService,
+    public localidadService: LocalidadService,
+    public municipioService: MunicipioService,
+    public estadoService: EstadoService,
     public mascotaService: MascotaService) {
       
       this.mascotas = (data) ? this.mascotaService.getMascotasbyIdCliente(data.id): []
@@ -38,11 +51,12 @@ export class DialogVerClienteComponent {
         calle: '',
         numeroInterior: '',
         numeroExterior: '',
-        colonia: '',
+        localidad: 0,
         codigoPostal: '',
-        municipio: '',
-        estado: '',
       }
+      this.localidad = this.localidadService.getLocalidadbyId(this.domicilio.localidad)
+      this.municipio = this.municipioService.getMunicipiobyId(this.localidad.municipio_id)
+      this.estado = this.estadoService.getEstadobyId(this.municipio.estado_id)
   }
 
   onNoClick = (): void => {

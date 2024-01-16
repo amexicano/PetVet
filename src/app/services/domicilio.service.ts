@@ -13,12 +13,21 @@ export class DomicilioService {
         calle: 'Circuito Turqueza',
         numeroExterior: '8D3',
         numeroInterior: '301',
-        colonia: 'Ayotla',
-        municipio: 'Ixtapaluca',
-        estado: 'Estado de Mexico',
+        localidad: 8,
         codigoPostal: '56560'
       },
     ]
+  }
+  updateDomicilio(domicilio: Domicilio): Domicilio {
+    const index = this._DATA.findIndex(d => d.id === domicilio.id)
+    this._DATA[index] = domicilio
+    return domicilio
+  }
+
+  addDomicilio(domicilio: Domicilio): Domicilio {
+    domicilio.id = this._DATA.length + 1
+    this._DATA.push(domicilio)
+    return domicilio
   }
 
   getDomiciliobyId(id: number): Domicilio {
@@ -28,9 +37,7 @@ export class DomicilioService {
       calle: '',
       numeroExterior: '',
       numeroInterior: '',
-      colonia: '',
-      municipio: '',
-      estado: '',
+      localidad: 0,
       codigoPostal: ''
     }
   }
