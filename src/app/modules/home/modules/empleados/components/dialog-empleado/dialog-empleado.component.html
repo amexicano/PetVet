@@ -1,0 +1,71 @@
+<form [formGroup]="form_empleado">
+    <h1 mat-dialog-title>{{data.action}}</h1>
+    <mat-dialog-content>
+        <section>
+            <h3>Ingresa tu Nombre:</h3>
+            <mat-form-field appearance="fill">
+                <mat-label>Nombre</mat-label>
+                <input type="text" matInput autocomplete="off" formControlName="nombre">
+            </mat-form-field>
+            <h3>Ingresa tu Primer Apellido:</h3>
+            <mat-form-field appearance="fill">
+                <mat-label>Primer Apellido</mat-label>
+                <input type="text" matInput autocomplete="off" formControlName="primerap">
+            </mat-form-field>
+            <h3>Ingresa tu Segundo Apellido:</h3>
+            <mat-form-field appearance="fill">
+                <mat-label>Segundo Apellido</mat-label>
+                <input type="text" matInput autocomplete="off" formControlName="segundoap">
+            </mat-form-field>
+            <h3>Ingresa tu Correo:</h3>
+            <mat-form-field appearance="fill">
+                <mat-label>Correo</mat-label>
+                <input type="email" matInput autocomplete="off" formControlName="correo">
+            </mat-form-field>
+            <!-- <h3>Selecciona Sexo:</h3>
+            <mat-form-field>
+                <mat-label>Sexo</mat-label>
+                <mat-select formControlName="sexo" name="sexo">
+                    <mat-option *ngFor="let sexo of sexoService.getSexos()" [value]="sexo.id">{{sexo.nombre}}</mat-option>
+                </mat-select>
+            </mat-form-field> -->
+
+        </section>
+            
+        <section>
+            <!-- <h3>Selecciona un Rol:</h3>
+            <mat-form-field>
+                <mat-label>Rol</mat-label>
+                <mat-select formControlName="rol" name="rol">
+                    <mat-option *ngFor="let rol of rolService.getRoles()" [value]="rol.id">{{rol.nombre}}</mat-option>
+                </mat-select>
+            </mat-form-field> -->
+            <h3>Ingresa tu Telefono:</h3>
+            <mat-form-field appearance="fill">
+                <mat-label>Telefono</mat-label>
+                <input type="tel" matInput autocomplete="off" formControlName="telefono">
+            </mat-form-field>
+            <h3>Selecciona una Fecha:</h3>
+            <mat-form-field>
+                <mat-label>Fecha de Nacimiento</mat-label>
+                <input matInput [matDatepicker]="nacimiento" formControlName="fechaNacimiento">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toogle matIconSuffix [attr.for]="nacimiento"></mat-datepicker-toogle>
+                <mat-datepicker #nacimiento></mat-datepicker>
+            </mat-form-field>
+            <h3>Selecciona una Fecha:</h3>
+            <mat-form-field>
+                <mat-label>Fecha de Ingreso</mat-label>
+                <input matInput [matDatepicker]="ingreso" formControlName="fechaIngreso">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toogle matIconSuffix [attr.for]="ingreso"></mat-datepicker-toogle>
+                <mat-datepicker #ingreso></mat-datepicker>
+            </mat-form-field>
+            <mat-checkbox formControlName="activo" color="primary" labelPosition="before">Activo:</mat-checkbox>
+        </section>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-button type="submit" (click)="saveEmpleado()" mat-raised-button color="primary" [disabled]="form_empleado.invalid">{{data.action}}</button>
+        <button mat-button color="warn" (click)="this.dialogRef.close()">Cancelar</button>
+    </mat-dialog-actions>
+</form>

@@ -1,0 +1,7 @@
+mat-card {
+    width: max(650px, 85%);
+    margin: 0 auto;
+    margin-top: 2%;
+    padding: 20px;
+    text-align: center;
+}

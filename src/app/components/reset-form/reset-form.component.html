@@ -1,0 +1,11 @@
+<form [formGroup]="reset" (ngSubmit)="resetPassword()">
+    <h3>Ingresa tu Correo:</h3>
+    <mat-form-field appearance="fill">
+        <mat-label>Correo</mat-label>
+        <input type="email" matInput autocomplete="off" formControlName="correo">
+    </mat-form-field>
+    <div>
+        <button type="submit" mat-raised-button color="primary" [disabled]="reset.invalid">Enviar</button>
+        <a routerLink=''>Regresar</a>
+    </div>
+</form>

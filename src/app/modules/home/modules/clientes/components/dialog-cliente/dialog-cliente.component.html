@@ -1,0 +1,56 @@
+<form [formGroup]="form_cliente">
+    <h1 mat-dialog-title>{{action}}</h1>
+    <mat-dialog-content>
+        <section>
+            <h3>Ingresa tu Nombre:</h3>
+            <mat-form-field appearance="fill">
+                <mat-label>Nombre</mat-label>
+                <input type="text" matInput autocomplete="off" formControlName="nombre">
+            </mat-form-field>
+            <h3>Ingresa tu Primer Apellido:</h3>
+            <mat-form-field appearance="fill">
+                <mat-label>Primer Apellido</mat-label>
+                <input type="text" matInput autocomplete="off" formControlName="primerap">
+            </mat-form-field>
+            <h3>Ingresa tu Segundo Apellido:</h3>
+            <mat-form-field appearance="fill">
+                <mat-label>Segundo Apellido</mat-label>
+                <input type="text" matInput autocomplete="off" formControlName="segundoap">
+            </mat-form-field>
+            <h3>Ingresa tu Correo:</h3>
+            <mat-form-field appearance="fill">
+                <mat-label>Correo</mat-label>
+                <input type="email" matInput autocomplete="off" formControlName="correo">
+            </mat-form-field>
+            <h3>Ingresa tu CURP:</h3>
+            <mat-form-field appearance="fill">
+                <mat-label>CURP</mat-label>
+                <input type="email" matInput autocomplete="off" formControlName="curp">
+            </mat-form-field>
+            <h3>Sexo:</h3>
+            <mat-form-field>
+                <mat-label>Selecciona un Sexo</mat-label>
+                <mat-select formControlName="sexo">
+                    <mat-option *ngFor="let sexo of sexos" [value]="sexo.id">{{sexo.nombre}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </section>
+        <section>
+            <h3>Ingresa tu Telefono Fijo:</h3>
+            <mat-form-field appearance="fill">
+                <mat-label>Telefono Fijo</mat-label>
+                <input type="tel" matInput autocomplete="off" formControlName="telefonoFijo">
+            </mat-form-field>
+            <h3>Ingresa tu Telefono Celular:</h3>
+            <mat-form-field appearance="fill">
+                <mat-label>Telefono Celular</mat-label>
+                <input type="tel" matInput autocomplete="off" formControlName="telefono">
+            </mat-form-field>
+        </section>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-button type="submit" (click)="saveCliente()" mat-raised-button color="primary"
+            [disabled]="form_cliente.invalid">{{action}}</button>
+        <button mat-button color="warn" (click)="this.dialogRef.close()">Cancelar</button>
+    </mat-dialog-actions>
+</form>

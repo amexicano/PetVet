@@ -1,0 +1,8 @@
+<mat-calendar 
+    (selectedChange)="getDatey()" 
+    [(selected)]="selectedDate" 
+    [dateFilter]="disabledDays"
+    [dateClass]="mapaCalor()" 
+    [minDate]="minDate" 
+    [maxDate]="maxDate">
+</mat-calendar>

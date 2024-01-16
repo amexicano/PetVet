@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.indicador-verde {
+    background: rgba(10, 128, 0, 0.75) !important;
+    border-radius: 100% !important;
+}
+
+.indicador-amarillo {
+    background: rgba(238, 255, 0, 0.75) !important;
+    border-radius: 100% !important;
+}
+
+.indicador-rojo {
+    background: rgba(255, 0, 0, 0.75) !important;
+    border-radius: 100% !important;
+}

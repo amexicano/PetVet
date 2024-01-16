@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>Ver Cliente</h1>
+<mat-dialog-content *ngIf="data">
+    <section>
+        <h2>Información del Cliente</h2>
+        <span>Nombre: <b>{{data.nombre | titlecase}}</b></span>
+        <span>Primer Apellido: <b>{{data.primerApellido | titlecase}}</b></span>
+        <span>Segundo Apellido: <b>{{data.segundoApellido | titlecase}}</b></span>
+        <span>Correo: <b>{{data.email | lowercase}}</b></span>
+        <span>CURP: <b>{{data.curp | uppercase}}</b></span>
+        <span>Sexo: <b>{{getSexo(data.sexo)}}</b> </span>
+        <span>Telefono: <b>{{data.telefono}}</b></span>
+        <span>Telefono Fijo: <b>{{data.telefonoFijo}}</b></span>    
+    </section>
+
+    <section *ngIf="domicilio.id == 0">
+        <h2>Dirección</h2>
+        <span>Sin domicilio</span>        
+    </section>
+
+    <section *ngIf="domicilio.id != 0">
+            <h2>Dirección</h2>
+            <span>Calle: <b>{{domicilio.calle| uppercase}}</b></span>
+            <span>Número Exterior: <b>{{domicilio.numeroExterior| uppercase}}</b></span>
+            <span>Número Interior: <b>{{domicilio.numeroInterior| uppercase}}</b></span>
+            <span>Colonia:<b>{{domicilio.colonia| uppercase}}</b></span>
+            <span>Estado: <b>{{domicilio.estado| uppercase}}</b></span>        
+            <span>Código Postal: <b>{{domicilio.codigoPostal| uppercase}}</b></span>        
+    </section>
+
+    <section>
+        <h2>Información de las Mascotas</h2>
+        <span *ngIf="mascotas.length == 0">No existen mascotas registradas</span>
+        <app-mostrar-mascota *ngFor="let mascota of mascotas" [mascota]="mascota"></app-mostrar-mascota>
+    </section>
+</mat-dialog-content>
+<mat-dialog-content *ngIf="!data">
+    <span>Cliente no encontrado</span>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button color="warn" (click)="onNoClick()">Cerrar</button>
+</mat-dialog-actions>

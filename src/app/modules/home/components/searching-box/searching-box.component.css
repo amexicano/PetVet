@@ -1,0 +1,11 @@
+div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+button, 
+mat-form-field {
+    width: 35%;
+}

@@ -1,0 +1,51 @@
+<table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+        <th mat-header-row *matHeaderCellDef> ID </th>
+        <td mat-row *matCellDef="let row"> {{row.id}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="nombre">
+        <th mat-header-row *matHeaderCellDef> Nombre </th>
+        <td mat-row *matCellDef="let row"> {{row.nombre | titlecase}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="primerApellido">
+        <th mat-header-row *matHeaderCellDef> Primer Apellido </th>
+        <td mat-row *matCellDef="let row"> {{row.primerApellido | titlecase}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="segundoApellido">
+        <th mat-header-row *matHeaderCellDef> Segundo Apellido </th>
+        <td mat-row *matCellDef="let row"> {{row.segundoApellido | titlecase}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="email">
+        <th mat-header-row *matHeaderCellDef> Email </th>
+        <td mat-row *matCellDef="let row"> {{row.email | lowercase}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="curp">
+        <th mat-header-row *matHeaderCellDef> CURP </th>
+        <td mat-row *matCellDef="let row"> {{row.curp| uppercase}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+        <th mat-header-row *matHeaderCellDef> Acciones </th>
+        <td mat-row *matCellDef="let row">
+            <button mat-icon-button (click)="mostrarCliente(row)">
+                <mat-icon>search</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" (click)="editarCliente(row)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="eliminarCliente(row)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" aria-label="Select page"></mat-paginator>

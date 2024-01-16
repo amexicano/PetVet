@@ -1,0 +1,11 @@
+<app-content-card [title]="'Empleados'">
+    <app-searching-box 
+        [placeholder]="'Buscar Empleado por ID'"
+        [buttonLabel]="'Crear Empleado'"
+        (clicked)="newEmpleado()"
+        (currentValue)="findEmpleado($event)">
+    </app-searching-box>
+    
+    <app-table-empleados></app-table-empleados>
+    
+</app-content-card>

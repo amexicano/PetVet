@@ -1,0 +1,11 @@
+<app-content-card [title]="title">
+    <button 
+        *ngIf="visualizar"
+        mat-raised-button 
+        type="submit" 
+        color="primary" 
+        (click)="nuevaCita()">
+        Crear Cita
+    </button>
+    <app-calendar (selectedValue)="listarCitasDelDia($event)"></app-calendar>
+</app-content-card>

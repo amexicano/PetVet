@@ -1,0 +1,9 @@
+<app-content-card title="Clientes">
+    <app-searching-box 
+        placeholder="Buscar Cliente por CURP"
+        buttonLabel="Crear Cliente"
+        (clicked)="nuevoCliente()"
+        (currentValue)="findCliente($event)">
+    </app-searching-box>
+    <app-table-clientes></app-table-clientes>
+</app-content-card>

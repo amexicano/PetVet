@@ -1,0 +1,15 @@
+mat-toolbar-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+span {
+    margin-left: 1em;
+    width: 95%;
+}
+
+a {
+    font-size: .75em;
+}

@@ -1,0 +1,9 @@
+<div>
+    <mat-form-field>
+        <mat-label>{{placeholder}}</mat-label>
+        <input #find type="text" matInput (keyup.enter)="sendValue(find.value)">
+        <mat-icon matSuffix></mat-icon>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="clickButton()">{{buttonLabel}}</button>
+</div>
