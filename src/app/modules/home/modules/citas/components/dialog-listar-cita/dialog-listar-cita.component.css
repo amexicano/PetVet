@@ -3,3 +3,7 @@ mat-dialog-actions {
     flex-direction: row;
     justify-content: flex-end;
 }
+
+app-mostrar-cita {
+    padding: 0 24px 24px;
+}

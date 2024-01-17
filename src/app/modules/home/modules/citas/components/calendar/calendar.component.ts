@@ -3,7 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatNativeDateModule } from '@angular/material/core';
-import { max } from 'rxjs';
+import { CitaService } from '../../../../../../services/cita.service';
 
 @Component({
   selector: 'app-calendar',
@@ -23,7 +23,8 @@ export class CalendarComponent {
   minDate: Date;
   maxDate: Date;
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog,
+    private citaService: CitaService,) {
     this.selectedDate = null;
     this.minDate = new Date();
     this.maxDate = new Date(this.minDate.getFullYear() + 1, this.minDate.getMonth(), this.minDate.getDate());
@@ -57,10 +58,10 @@ export class CalendarComponent {
   }
 
   _filtroDias(date: Date): string {
-    if (date.getDay() == 0 || date.getDay() == 6) return '';
-    return (date.getDate() == 4) ? 'indicador-verde' :
-      (date.getDate() == 5) ? 'indicador-amarillo' :
-      (date.getDate() == 3) ?  'indicador-rojo' : '';
-
+    let citas = this.citaService.getCitasByDate(date).length;
+    if (citas == 0) return '';
+    if (citas >= 1 && citas <= 3) return 'indicador-verde';
+    if (citas == 4 || citas == 5) return 'indicador-amarillo';
+    return 'indicador-rojo';
   }
 }

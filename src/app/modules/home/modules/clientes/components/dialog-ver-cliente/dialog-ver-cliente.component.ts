@@ -44,19 +44,39 @@ export class DialogVerClienteComponent {
     public municipioService: MunicipioService,
     public estadoService: EstadoService,
     public mascotaService: MascotaService) {
-      
-      this.mascotas = (data) ? this.mascotaService.getMascotasbyIdCliente(data.id): []
-      this.domicilio = data ? this.domicilioService.getDomiciliobyId(data.domicilio) : {
-        id: 0,
-        calle: '',
-        numeroInterior: '',
-        numeroExterior: '',
-        localidad: 0,
-        codigoPostal: '',
+      if(data){
+        this.mascotas = this.mascotaService.getMascotasbyIdCliente(data.id)
+        this.domicilio = this.domicilioService.getDomiciliobyId(data.domicilio)
+        this.localidad = this.localidadService.getLocalidadbyId(this.domicilio.localidad)
+        this.municipio = this.municipioService.getMunicipiobyId(this.localidad.municipio_id)
+        this.estado = this.estadoService.getEstadobyId(this.municipio.estado_id)
+
+      } else {
+        this.mascotas = []
+        this.domicilio = {
+          id: 0,
+          calle: '',
+          numeroInterior: '',
+          numeroExterior: '',
+          localidad: 0,
+          codigoPostal: '',
+        }
+        this.localidad = {
+          id: 0,
+          nombre: '',
+          municipio_id: 0
+        }
+        this.municipio = {
+          id: 0,
+          nombre: '',
+          estado_id: 0
+        }
+        this.estado = {
+          id: 0,
+          nombre: '',
+          sigla: ''
+        }
       }
-      this.localidad = this.localidadService.getLocalidadbyId(this.domicilio.localidad)
-      this.municipio = this.municipioService.getMunicipiobyId(this.localidad.municipio_id)
-      this.estado = this.estadoService.getEstadobyId(this.municipio.estado_id)
   }
 
   onNoClick = (): void => {

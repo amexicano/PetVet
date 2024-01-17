@@ -6,7 +6,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
-import { Citas } from '../../interfaces/citas.interface';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
@@ -24,13 +23,11 @@ import { MatButtonModule } from '@angular/material/button';
 })
 
 export class DialogCitaComponent {
-  action!: string;
   citas: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<DialogCitaComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Citas,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,) {
-      this.action = data.action;
       this.citas = fb.group({
         correo: [''],
       });

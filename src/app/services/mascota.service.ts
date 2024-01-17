@@ -48,4 +48,8 @@ export class MascotaService {
   getMascotasbyIdCliente(id:number): Mascota[] {
     return this._DATA.filter(mascota => mascota.cliente == id)
   }
+
+  getMascotasbyId(id: number): Mascota {
+    return this._DATA.filter(mascota => mascota.id == id)[0]
+  }
 }

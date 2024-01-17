@@ -17,6 +17,7 @@ import { LocalidadService } from '../../../../../../services/localidad.service';
 import { MunicipioService } from '../../../../../../services/municipio.service';
 import { EstadoService } from '../../../../../../services/estado.service';
 import { filter, } from 'rxjs';
+import { AgregarMascotaComponent } from '../../../../components/agregar-mascota/agregar-mascota.component';
 
 interface ActionCliente{
   cliente: Cliente,
@@ -38,6 +39,7 @@ interface ActionCliente{
     MatInputModule,
     ReactiveFormsModule,
     FormsModule,
+    AgregarMascotaComponent,
   ]
 })
 export class DialogClienteComponent {

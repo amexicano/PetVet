@@ -28,6 +28,10 @@ export class ClientesService {
     return this._DATA
   }
 
+  getClienteById(id: number): Cliente {
+    return this._DATA.filter(cliente => cliente.id == id)[0]
+  }
+
   eliminarCliente(id: number): void {
     this._DATA = this._DATA.filter((cliente) => cliente.id !== id);
   }
