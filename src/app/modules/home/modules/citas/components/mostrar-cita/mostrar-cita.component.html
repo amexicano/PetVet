@@ -32,7 +32,10 @@
         </mat-chip-set>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-raised-button color="warn" (click)="agendar()">Reagendar</button>
+            @if(this.accountService.userValue?.tipo == 0 || this.accountService.userValue?.tipo == 1 ||
+            this.accountService.userValue?.tipo == 2){
+                <button mat-raised-button color="warn" (click)="agendar()">Reagendar</button>
+            }
     </mat-card-actions>
 </mat-card>
 

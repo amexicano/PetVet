@@ -9,6 +9,8 @@
     }
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button color="primary" (click)="onNoClick()">Crear Cita Hoy</button>
+    @if(this.accountService.userValue?.tipo == 0  || this.accountService.userValue?.tipo == 1 || this.accountService.userValue?.tipo == 2){
+        <button mat-button color="primary" (click)="onNoClick()">Crear Cita Hoy</button>
+    }
     <button mat-button color="warn" (click)="onNoClick()">Cancelar</button>
 </mat-dialog-actions>

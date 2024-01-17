@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Cita } from '../../../../../../interfaces/cita.interface';
 import { MostrarCitaComponent } from '../mostrar-cita/mostrar-cita.component';
 import { CitaService } from '../../../../../../services/cita.service';
+import { AccountService } from '../../../../../../services/account.service';
 
 @Component({
   selector: 'app-dialog-listar-cita',
@@ -23,6 +24,7 @@ export class DialogListarCitaComponent {
 
   constructor(public dialogRef: MatDialogRef<DialogListarCitaComponent>,
     public citaService: CitaService,
+    public accountService: AccountService,
     @Inject(MAT_DIALOG_DATA) public fecha: Date) { 
       this.citas = this.citaService.getCitasByDate(fecha);
     }

@@ -60,8 +60,8 @@ export class CalendarComponent {
   _filtroDias(date: Date): string {
     let citas = this.citaService.getCitasByDate(date).length;
     if (citas == 0) return '';
-    if (citas >= 1 && citas <= 3) return 'indicador-verde';
-    if (citas == 4 || citas == 5) return 'indicador-amarillo';
+    if (citas == 1 || citas == 2) return 'indicador-verde';
+    if (citas == 3 || citas == 4) return 'indicador-amarillo';
     return 'indicador-rojo';
   }
 }

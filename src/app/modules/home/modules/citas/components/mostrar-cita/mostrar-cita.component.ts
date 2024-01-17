@@ -11,6 +11,7 @@ import { Mascota } from '../../../../../../interfaces/mascota.interface';
 import { Cliente } from '../../../../../../interfaces/cliente.interface';
 import { ClientesService } from '../../../../../../services/clientes.service';
 import { Empleado } from '../../../../../../interfaces/empleado.interface';
+import { AccountService } from '../../../../../../services/account.service';
 
 @Component({
   selector: 'app-mostrar-cita',
@@ -37,7 +38,8 @@ export class MostrarCitaComponent {
     //private horarioService: HorarioService,
     private mascotaService: MascotaService,
     private clienteService: ClientesService,
-    private empleadoService: EmpleadosService, ) {
+    private empleadoService: EmpleadosService, 
+    public accountService: AccountService,) {
   }
 
   ngOnInit(): void {

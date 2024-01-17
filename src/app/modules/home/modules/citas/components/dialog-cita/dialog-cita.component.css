@@ -1,3 +1,22 @@
+mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+}
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    margin: 0 15px;
+    flex: 1;
+}
+
 mat-dialog-actions {
     display: flex;
     flex-direction: row;
