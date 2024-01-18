@@ -8,7 +8,7 @@
                         <mat-label>Cliente</mat-label>
                         <mat-select id="cliente" [formControl]="clienteControl" name="cliente">
                             @for (cliente of clienteService.getClientes(); track cliente) {
-                            <mat-option [value]="cliente.id">{{cliente.nombre}} - {{cliente.curp | uppercase}}</mat-option>
+                                <mat-option [value]="cliente.id">{{cliente.nombre}} - {{cliente.curp | uppercase}}</mat-option>
                             }
                         </mat-select>
                     </mat-form-field>
@@ -17,14 +17,14 @@
                         <mat-label>Mascota</mat-label>
                         <mat-select id="mascota" [formControl]="mascotaControl" name="mascota">
                             @for (mascota of mascotas; track mascota) {
-                            <mat-option [value]="mascota.id">{{mascota.nombre}}</mat-option>
+                                <mat-option [value]="mascota.id">{{mascota.nombre}}</mat-option>
                             }
                         </mat-select>
                     </mat-form-field>
                     <h3>Selecciona Fecha:</h3>
                     <mat-form-field>
                         <mat-label>Cita</mat-label>
-                        <input matInput [matDatepicker]="cita" formControlName="fechaNacimiento">
+                        <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="cita" formControlName="fecha">
                         <mat-hint>MM/DD/YYYY</mat-hint>
                         <mat-datepicker-toggle matIconSuffix [for]="cita"></mat-datepicker-toggle>
                         <mat-datepicker #cita></mat-datepicker>
@@ -32,9 +32,9 @@
                     <h3>Selecciona Horario:</h3>
                     <mat-form-field>
                         <mat-label>Horario</mat-label>
-                        <mat-select id="horario" [formControl]="mascotaControl" name="horario">
+                        <mat-select id="horario" formControlName="horario" name="horario">
                             @for (horario of horarios; track horario) {
-                            <mat-option [value]="horario.id">{{horario.horario}}</mat-option>
+                                <mat-option [value]="horario.id">{{horario.horario | uppercase}}</mat-option>
                             }
                         </mat-select>
                     </mat-form-field>
@@ -43,7 +43,7 @@
                     <h3>Selecciona Estilista 1:</h3>
                     <mat-form-field>
                         <mat-label>Estilista 1</mat-label>
-                        <mat-select id="estilista1" [formControl]="mascotaControl" name="estilista">
+                        <mat-select id="estilista1" formControlName="estilista1" name="estilista">
                             @for (estilista of estilistas; track estilista) {
                             <mat-option [value]="estilista.id">{{estilista.nombre | titlecase}} {{estilista.primerApellido | titlecase}} {{estilista.segundoApellido | titlecase}}</mat-option>
                             }
@@ -52,7 +52,7 @@
                     <h3>Selecciona Estilista 2:</h3>
                     <mat-form-field>
                         <mat-label>Estilista 2</mat-label>
-                        <mat-select id="estilista2" [formControl]="mascotaControl" name="estilista">
+                        <mat-select id="estilista2" formControlName="estilista2" name="estilista">
                             @for (estilista of estilistas; track estilista) {
                             <mat-option [value]="estilista.id">{{estilista.nombre | titlecase}} {{estilista.primerApellido | titlecase}} {{estilista.segundoApellido | titlecase}}</mat-option>
                             }
@@ -61,7 +61,7 @@
                     <h3>Selecciona Estilista 3:</h3>
                     <mat-form-field>
                         <mat-label>Estilista 3</mat-label>
-                        <mat-select id="estilista3" [formControl]="mascotaControl" name="estilista">
+                        <mat-select id="estilista3" formControlName="estilista3" name="estilista">
                             @for (estilista of estilistas; track estilista) {
                             <mat-option [value]="estilista.id">{{estilista.nombre | titlecase}} {{estilista.primerApellido | titlecase}} {{estilista.segundoApellido | titlecase}}</mat-option>
                             }

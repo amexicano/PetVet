@@ -63,8 +63,19 @@ export class DialogClienteComponent {
     public fb: FormBuilder) {
 
       if(data.cliente?.id){
+        //Init form values
         const domicilio = this.domicilioService.getDomiciliobyId(data.cliente.domicilio)
-        const mascotas = this.mascotaService.getMascotasbyIdCliente(data.cliente.id)
+        const municipio = this.municipioService.getMunicipiobyId((this.localidadService.getLocalidadbyId(domicilio.localidad).municipio_id))
+        const estado = this.estadoService.getEstadobyId(municipio.estado_id)
+
+        this.municipios = this.municipioService.getMunicipiosbyEstadoId(estado.id)
+        this.localidades = this.localidadService.getLocalidadesbyMunicipioId(municipio.id)
+
+        this.localidadControl = new FormControl<number | null>(domicilio.localidad, Validators.required)
+        this.municipioControl = new FormControl<number | null>(municipio.id, Validators.required)
+        this.estadoControl = new FormControl<number | null>(estado.id, Validators.required)
+
+        //const mascotas = this.mascotaService.getMascotasbyIdCliente(data.cliente.id)
         this.newlocalidad = domicilio.localidad
         this.form_cliente = fb.group({
           id: [data.cliente.id],
@@ -82,21 +93,16 @@ export class DialogClienteComponent {
           interior: [domicilio.numeroInterior, [Validators.required]],
           exterior: [domicilio.numeroExterior, [Validators.required]],
           postal: [domicilio.codigoPostal, [Validators.required]],
-          localidad: [domicilio.localidad, [Validators.required]],
+          localidad: this.localidadControl,
           //Mascotas
           // mascotas: [mascotas, [Validators.length > 1]]
         })
-        const municipio = this.municipioService.getMunicipiobyId((this.localidadService.getLocalidadbyId(domicilio.localidad).municipio_id))
-        const estado = this.estadoService.getEstadobyId(municipio.estado_id)
-
-        this.localidadControl = new FormControl<number | null>(domicilio.localidad, Validators.required)
-        this.municipioControl = new FormControl<number | null>(municipio.id, Validators.required)
-        this.estadoControl = new FormControl<number | null>(estado.id, Validators.required)
-
-        this.municipios = this.municipioService.getMunicipiosbyEstadoId(estado.id)
-        this.localidades = this.localidadService.getLocalidadesbyMunicipioId(municipio.id)
 
       } else {
+        this.estadoControl = new FormControl<number | null>(null, Validators.required)
+        this.municipioControl = new FormControl<number | null>(null, Validators.required)
+        this.localidadControl = new FormControl<number | null>(null, Validators.required)
+
         this.form_cliente = fb.group({
           id: [0],
           nombre: ['', [Validators.required]],
@@ -113,11 +119,9 @@ export class DialogClienteComponent {
           interior: ['', [Validators.required]],
           exterior: ['', [Validators.required]],
           postal: ['', [Validators.required]],
+          localidad: this.localidadControl,
           // mascotas: [[], [Validators.length > 1]]
         })  
-        this.estadoControl = new FormControl<number | null>(null, Validators.required)
-        this.municipioControl = new FormControl<number | null>(null, Validators.required)
-        this.localidadControl = new FormControl<number | null>(null, Validators.required)
       }
 
     this.estadoControl.valueChanges

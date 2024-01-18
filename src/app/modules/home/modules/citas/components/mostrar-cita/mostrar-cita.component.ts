@@ -12,6 +12,8 @@ import { Cliente } from '../../../../../../interfaces/cliente.interface';
 import { ClientesService } from '../../../../../../services/clientes.service';
 import { Empleado } from '../../../../../../interfaces/empleado.interface';
 import { AccountService } from '../../../../../../services/account.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogCitaComponent } from '../dialog-cita/dialog-cita.component';
 
 @Component({
   selector: 'app-mostrar-cita',
@@ -39,7 +41,8 @@ export class MostrarCitaComponent {
     private mascotaService: MascotaService,
     private clienteService: ClientesService,
     private empleadoService: EmpleadosService, 
-    public accountService: AccountService,) {
+    public accountService: AccountService,
+    public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -50,6 +53,15 @@ export class MostrarCitaComponent {
     this.estilista3 = this.empleadoService.getEmpleadoById(this.cita.id_estilista3)
   }
 
-  agendar(): void {
+  agendar(cita: Cita): void {
+    const dialogRef = this.dialog.open(DialogCitaComponent, {
+      width: '85%',
+      data: { action: 'Reagendar Cita', cita: cita }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    })
+
   }
 }

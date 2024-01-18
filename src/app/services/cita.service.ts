@@ -42,8 +42,7 @@ export class CitaService {
   }
 
   getCitasByDate(fecha: Date): Cita[] {
-    console.table(this._DATA);
-    return this._DATA
+      return this._DATA
       .filter(cita => {
         return cita.fecha.getDate() == fecha.getDate() &&
         cita.fecha.getMonth() == fecha.getMonth() &&

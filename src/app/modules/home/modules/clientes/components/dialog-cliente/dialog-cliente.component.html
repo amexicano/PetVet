@@ -104,7 +104,7 @@
     </mat-dialog-content>
     <mat-dialog-actions>
         <button mat-button type="submit" (click)="saveCliente()" mat-raised-button color="primary"
-            [disabled]="form_cliente.invalid && estadoControl.invalid && municipioControl.invalid && localidadControl.invalid">{{data.action}}</button>
+            [disabled]="form_cliente.invalid">{{data.action}}</button>
         <button mat-button color="warn" (click)="this.dialogRef.close()">Cancelar</button>
     </mat-dialog-actions>
 </form>
