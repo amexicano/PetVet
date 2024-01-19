@@ -72,12 +72,14 @@ export class DialogCitaComponent {
 
       this.clienteControl = new FormControl<number | null>(null, Validators.required)
       this.mascotaControl = new FormControl<number | null>(null, Validators.required)
-      // this.estilistaControl1 = new FormControl<number | null>(null, Validators.required)
-      // this.estilistaControl2 = new FormControl<number | null>(null)
-      // this.estilistaControl3 = new FormControl<number | null>(null)
 
       this.horarios = this.horariosService.getHorarios()
-      this.estilistas = this.empleadosService.getEmpleados().filter((empleado) => empleado.rol === 3)
+
+      this.empleadosService.getEmpleadosByRol(3).
+      subscribe((data: Empleado[]) => {
+        this.estilistas = data;
+      })
+      
       this.citas = fb.group({
         cliente: this.clienteControl,
         mascota: this.mascotaControl,

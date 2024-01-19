@@ -15,7 +15,6 @@ import { DialogEmpleadoComponent } from '../dialog-empleado/dialog-empleado.comp
 // Interfaces & Services
 import { Empleado } from '../../../../../../interfaces/empleado.interface';
 import { EmpleadosService } from '../../../../../../services/empleados.service';
-import { RolService } from '../../../../../../services/rol.service';
 import { DialogVerEmpleadoComponent } from '../dialog-ver-empleado/dialog-ver-empleado.component';
 
 @Component({
@@ -39,22 +38,20 @@ export class TableEmpleadosComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private empleadosService: EmpleadosService,
-    public rolService: RolService,
     public dialog: MatDialog,
     private injector: Injector) {
-    this.dataSource = new MatTableDataSource<Empleado>(this.empleadosService.getEmpleados());
+    this.empleadosService.getEmpleados().subscribe((data: Empleado[]) => {
+      this.dataSource = new MatTableDataSource<Empleado>(data);
+      this.dataSource.paginator = this.paginator;
+    })
   }
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-  }
-
+  
   editarEmpleado(empleado: Empleado): void {
     const dialogRef = this.dialog.open(DialogEmpleadoComponent, {
       width: '95%',
       data: {action: 'Editar Empleado', empleado: empleado},
       injector: this.injector,
-    }, );
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       this.updateTable();
@@ -62,8 +59,15 @@ export class TableEmpleadosComponent {
   }
 
   eliminarEmpleado(empleado: Empleado): void {
-    this.empleadosService.eliminarEmpleado(empleado.id);
-    this.updateTable();
+    this.empleadosService.eliminarEmpleado(empleado.id)
+    .subscribe({
+      next: (data: any) => {
+        this.updateTable();
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    })
   }
 
   mostrarEmpleado(empleado: Empleado): void {
@@ -74,11 +78,9 @@ export class TableEmpleadosComponent {
   }
 
   updateTable(): void {
-    this.dataSource = new MatTableDataSource<Empleado>(this.empleadosService.getEmpleados());
-    this.dataSource.paginator = this.paginator;
-  }
-
-  getRolbyId(id: number): string {
-    return this.rolService.getRolbyId(id).nombre;
+    this.empleadosService.getEmpleados().subscribe((data: Empleado[]) => {
+      this.dataSource = new MatTableDataSource<Empleado>(data);
+      this.dataSource.paginator = this.paginator;
+    })
   }
 }

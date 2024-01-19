@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, map } from 'rxjs';
-import { User } from '../interfaces/user';
-import { HttpClient } from '@angular/common/http';
 import { Account } from '../interfaces/account.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  private userSubject: BehaviorSubject<User | null>;
-  public user: Observable<User | null>;
+  private userSubject: BehaviorSubject<Account | null>;
+  public user: Observable<Account | null>;
 
   constructor(
     private router: Router,
@@ -19,7 +18,7 @@ export class AccountService {
     this.user = this.userSubject.asObservable();
   }
   
-  get userValue(): User | null {
+  get userValue(): Account | null {
     return this.userSubject.value;
   }
 

@@ -18,6 +18,7 @@ import { MunicipioService } from '../../../../../../services/municipio.service';
 import { EstadoService } from '../../../../../../services/estado.service';
 import { filter, } from 'rxjs';
 import { AgregarMascotaComponent } from '../../../../components/agregar-mascota/agregar-mascota.component';
+import { Sexo } from '../../../../../../interfaces/sexo.interface';
 
 interface ActionCliente{
   cliente: Cliente,
@@ -47,6 +48,7 @@ export class DialogClienteComponent {
   estadoControl: FormControl<number | null>
   municipioControl: FormControl<number | null>
   localidadControl: FormControl<number | null>
+  sexos: Sexo[] = []
   municipios: any
   localidades: any
   newlocalidad: number = 0
@@ -61,6 +63,10 @@ export class DialogClienteComponent {
     public estadoService: EstadoService,
     public mascotaService: MascotaService,
     public fb: FormBuilder) {
+      this.sexoService.getSexos()
+      .subscribe((data: Sexo[]) => {
+        this.sexos = data
+      })
 
       if(data.cliente?.id){
         //Init form values

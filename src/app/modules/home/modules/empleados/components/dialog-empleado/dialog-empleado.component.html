@@ -26,7 +26,7 @@
             <mat-form-field>
                 <mat-label>Sexo</mat-label>
                 <mat-select formControlName="sexo" name="sexo">
-                    @for (sexo of sexoService.getSexos(); track sexo) {
+                    @for (sexo of sexos; track sexo) {
                         <mat-option [value]="sexo.id">{{sexo.nombre}}</mat-option>
                     }
                 </mat-select>
@@ -39,7 +39,7 @@
             <mat-form-field>
                 <mat-label>Rol</mat-label>
                 <mat-select id="rol" formControlName="rol" name="rol">
-                    @for (rol of rolService.getRoles(); track rol) {
+                    @for (rol of roles; track rol) {
                         <mat-option [value]="rol.id">{{rol.nombre}}</mat-option>
                     }
                 </mat-select>

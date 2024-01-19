@@ -1,33 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Sexo } from '../interfaces/sexo.interface'
+import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
 export class SexoService {
-  _DATA!: Sexo[];
 
-  constructor() {
-    this._DATA  = [
-      {
-        id: 1,
-        nombre: 'Masculino',
-        activo: true
-      },
-      {
-        id: 2,
-        nombre: 'Femenino',
-        activo: true
-      }
-    ]
-  }
+  constructor(private httpClient: HttpClient) {}
 
   getSexos(){
-    return this._DATA
+    return this.httpClient.get<Sexo[]>('http://localhost:9090/sexos');
   }
 
-  getSexobyId(id: number): Sexo{
-    return this._DATA.find(rol => rol.id === id)
-      ?? { id: 0, nombre: '', activo: false };
-
+  getSexobyId(id: number){
+    return this.httpClient.get<Sexo>(`http://localhost:9090/sexos/${id}`);
   }
 }

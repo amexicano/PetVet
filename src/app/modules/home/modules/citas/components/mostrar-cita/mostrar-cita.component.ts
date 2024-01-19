@@ -48,9 +48,18 @@ export class MostrarCitaComponent {
   ngOnInit(): void {
     this.mascota = this.mascotaService.getMascotasbyId(this.cita.id_mascota)
     this.cliente = this.clienteService.getClienteById(this.mascota.cliente)
-    this.estilista1 = this.empleadoService.getEmpleadoById(this.cita.id_estilista1)
-    this.estilista2 = this.empleadoService.getEmpleadoById(this.cita.id_estilista2)
-    this.estilista3 = this.empleadoService.getEmpleadoById(this.cita.id_estilista3)
+    this.empleadoService.getEmpleadoById(this.cita.id_estilista1)
+    .subscribe(empleado => {
+      this.estilista1 = empleado
+    })
+    this.empleadoService.getEmpleadoById(this.cita.id_estilista2)
+    .subscribe(empleado => {
+      this.estilista2 = empleado
+    })
+    this.empleadoService.getEmpleadoById(this.cita.id_estilista3)
+    .subscribe(empleado => {
+      this.estilista3 = empleado
+    })
   }
 
   agendar(cita: Cita): void {

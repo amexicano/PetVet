@@ -21,8 +21,10 @@ import { Empleado } from '../../../../../../interfaces/empleado.interface';
 import { EmpleadosService } from '../../../../../../services/empleados.service';
 import { RolService } from '../../../../../../services/rol.service';
 import { SexoService } from '../../../../../../services/sexo.service';
+import { Sexo } from '../../../../../../interfaces/sexo.interface';
+import { Rol } from '../../../../../../interfaces/rol.interface';
 
-interface ActionEmpleado{
+interface ActionEmpleado {
   empleado: Empleado,
   action: string
 }
@@ -47,15 +49,27 @@ interface ActionEmpleado{
   ],
 })
 export class DialogEmpleadoComponent {
+  sexos: Sexo[] = []
+  roles: Rol[] = []
   maxDate!: Date;
   form_empleado: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<DialogEmpleadoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ActionEmpleado,
-     private empleadoService: EmpleadosService,
-     public rolService: RolService,
-     public sexoService: SexoService,
-     private fb: FormBuilder,) {
+      private empleadoService: EmpleadosService,
+      private sexoService: SexoService,
+      private rolService: RolService,
+      private fb: FormBuilder,) {
+      
+      this.sexoService.getSexos()
+      .subscribe((data: Sexo[]) => {
+        this.sexos = data;
+      });
+      this.rolService.getRoles()
+      .subscribe((data: Sexo[]) => {
+        this.roles = data;
+      });
+
       if (data.empleado){
         this.form_empleado = fb.group({
           id: [data.empleado?.id, []],
@@ -66,8 +80,8 @@ export class DialogEmpleadoComponent {
           telefono: [data.empleado?.telefono, [Validators.required]],
           fechaNacimiento: [data.empleado?.fechaNacimiento, [Validators.required]],
           fechaIngreso: [data.empleado?.fechaIngreso, [Validators.required]],
-          rol: [data.empleado?.rol, [Validators.required]],
-          sexo: [data.empleado?.sexo, [Validators.required]],
+          rol: [data.empleado?.rol.id, [Validators.required]],
+          sexo: [data.empleado?.sexo.id, [Validators.required]],
           activo: [data.empleado?.activo, []],
         });
       } else {
@@ -85,16 +99,20 @@ export class DialogEmpleadoComponent {
           activo: [false, []],
         });
       }
-
   }
   
   saveEmpleado = (): void => {
     const newEmpleado = this.getEmpleadoValues()
-    
+
     if(newEmpleado.id == 0){
       this.empleadoService.addEmpleado(newEmpleado)
+        .subscribe(response => {
+          //do something with response
+        }, err => {
+          console.log(err.message);
+        })
     } else{
-      this.empleadoService.updateEmpleado(newEmpleado)
+      this.empleadoService.updateEmpleado(newEmpleado).subscribe();
     }
 
     this.dialogRef.close();
@@ -102,6 +120,29 @@ export class DialogEmpleadoComponent {
 
   private getEmpleadoValues(): Empleado {
     const cita = this.form_empleado.value
+    let selectedSexo: Sexo = {
+      id: 0,
+      nombre: '',
+      activo: false
+    }
+    let selectedRol: Rol = {
+      id: 0,
+      nombre: '',
+      activo: false
+    }
+
+    this.sexos.forEach(element => {
+      if(element.id == cita.sexo){
+        selectedSexo = element
+      }
+    });
+
+    this.roles.forEach(element => {
+      if(element.id == cita.rol){
+        selectedRol = element
+      }
+    });
+
     return {
       id: cita.id,
       nombre: cita.nombre,
@@ -109,12 +150,11 @@ export class DialogEmpleadoComponent {
       segundoApellido: cita.segundoap,
       email: cita.correo,
       telefono: cita.telefono,
-      sexo: cita.sexo,
       fechaNacimiento: cita.fechaNacimiento,
       fechaIngreso: cita.fechaIngreso,
-      rol: cita.rol,
+      rol: selectedRol,
+      sexo: selectedSexo,
       activo: cita.activo
     }
-
   }
 }

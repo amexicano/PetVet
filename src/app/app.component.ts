@@ -5,7 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { User } from './interfaces/user';
+import { Account } from './interfaces/account.interface';
 import { AccountService } from './services/account.service';
 
 @Component({
@@ -25,7 +25,7 @@ import { AccountService } from './services/account.service';
 })
 
 export class AppComponent {
-    user?: User | null;
+    user?: Account | null;
 
     constructor(private router: Router,
         private accountService: AccountService) {

@@ -1,18 +1,19 @@
 <h1 mat-dialog-title>Ver Empleado</h1>
-<mat-dialog-content *ngIf="data">
+<mat-dialog-content>
+    @if(!data){
+        <span>Empleado no encontrado</span>
+    } @else{
         <span>Nombre: <b>{{data.nombre}}</b></span>
         <span>Primer Apellido: <b>{{data.primerApellido}}</b></span>
         <span>Segundo Apellido: <b>{{data.segundoApellido}}</b></span>
         <span>Correo: <b>{{data.email}}</b></span>
-        <span>Rol: <b>{{getRolbyId(data.rol)}}</b> </span>
-        <span>Sexo: <b>{{getSexo(data.sexo)}}</b> </span>
+        <span>Rol: <b>{{data.rol.nombre}}</b> </span>
+        <span>Sexo: <b>{{data.sexo.nombre}}</b> </span>
         <span>Fecha de Nacimiento: <b>{{data.fechaNacimiento | date:'dd/MM/yyyy'}}</b></span>
         <span>Fecha de Ingreso: <b>{{data.fechaIngreso | date:'dd/MM/yyyy'}}</b></span>
         <span>Telefono: <b>{{data.telefono}}</b></span>
         <span><b>{{data.activo ? 'Activo' : 'Inactivo'}}</b></span>
-</mat-dialog-content>
-<mat-dialog-content *ngIf="!data">
-    <span >Empleado no encontrado</span>
+    }
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-button color="warn" (click)="onNoClick()">Cerrar</button>

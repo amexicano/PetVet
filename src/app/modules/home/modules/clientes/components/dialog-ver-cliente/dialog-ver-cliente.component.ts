@@ -16,6 +16,7 @@ import { MunicipioService } from '../../../../../../services/municipio.service';
 import { EstadoService } from '../../../../../../services/estado.service';
 import { Municipio } from '../../../../../../interfaces/municipio.interface';
 import { Estado } from '../../../../../../interfaces/estado.interface';
+import { Sexo } from '../../../../../../interfaces/sexo.interface';
 @Component({
   selector: 'app-dialog-ver-cliente',
   standalone: true,
@@ -38,7 +39,7 @@ export class DialogVerClienteComponent {
 
   constructor(public dialogRef: MatDialogRef<DialogVerClienteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Cliente,
-    public sexoService: SexoService,
+    private sexoService: SexoService,
     public domicilioService: DomicilioService,
     public localidadService: LocalidadService,
     public municipioService: MunicipioService,
@@ -84,6 +85,10 @@ export class DialogVerClienteComponent {
   }
 
   getSexo(id: number): string {
-    return this.sexoService.getSexobyId(id).nombre;
+    this.sexoService.getSexobyId(id).
+    subscribe((data: Sexo) => {
+      return data.nombre
+    })
+    return ''
   }
 }

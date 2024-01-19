@@ -26,7 +26,7 @@
 
     <ng-container matColumnDef="rol">
         <th mat-header-row *matHeaderCellDef> Rol </th>
-        <td mat-row *matCellDef="let row"> {{getRolbyId(row.rol)}} </td>
+        <td mat-row *matCellDef="let row"> {{row.rol.nombre}} </td>
     </ng-container>
 
     <ng-container matColumnDef="acciones">

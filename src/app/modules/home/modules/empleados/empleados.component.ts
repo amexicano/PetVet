@@ -29,13 +29,21 @@ export class EmpleadosComponent {
     private injector: Injector) { }
 
   findEmpleado = (event: any): void =>  {
-
-    const empleado = this.empleadoService.getEmpleadoById(parseInt(event));
-    const dialogRef = this.dialog.open(DialogVerEmpleadoComponent, {
-      width: '95%',
-      data: empleado,
+    this.empleadoService.getEmpleadoById(parseInt(event))
+    .subscribe({
+      next: empleado => {
+        const dialogRef = this.dialog.open(DialogVerEmpleadoComponent, {
+          width: '95%',
+          data: empleado,
+        });
+      },
+      error: err => {
+        const dialogRef = this.dialog.open(DialogVerEmpleadoComponent, {
+          width: '95%',
+          data: null,
+        });
+      }
     });
-
   }
 
   newEmpleado = (): void => {
