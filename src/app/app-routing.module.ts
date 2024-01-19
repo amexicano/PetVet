@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { ResetComponent } from './pages/reset/reset.component';
+import { provideHttpClient } from '@angular/common/http';
 
 const routes: Routes = [
   { path: '', component: LoginComponent, title: ' PetVet - Login'},
@@ -12,7 +13,10 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [
+    provideHttpClient()
+  ]
 })
 
 export class AppRoutingModule { }

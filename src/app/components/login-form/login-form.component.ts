@@ -25,7 +25,6 @@ import { first } from 'rxjs';
     MatSnackBarModule,
     RouterModule,
   ],
-
 })
 export class LoginFormComponent {
   form: FormGroup;
@@ -42,10 +41,7 @@ export class LoginFormComponent {
   }
 
   ingresar = () : void => {
-    const user = this.form.value.usuario;
-    const pass = this.form.value.password;
-
-    this.accountService.login(user, pass)
+    this.accountService.login(this.form.value.usuario, this.form.value.password)
       // Tomar el primer elemento del flujo de datos
       .pipe(first())
       .subscribe({
@@ -53,8 +49,9 @@ export class LoginFormComponent {
           // get return url from query parameters or default to home page
           this.router.navigate(['/home']);
         },
-        error: (error:string) =>{
-          this.error(error);        
+        error: (error:any) =>{
+          error.status === 404 ? this.error('Usuario o contraseña incorrectos') :
+          this.error('Error desconocido');        
         }
       });
   }
