@@ -9,7 +9,6 @@ import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Cliente } from '../../../../../../interfaces/cliente.interface';
 import { SexoService } from '../../../../../../services/sexo.service';
-import { DomicilioService } from '../../../../../../services/domicilio.service';
 import { MascotaService } from '../../../../../../services/mascota.service';
 import { Domicilio } from '../../../../../../interfaces/domicilio.interface';
 import { ClientesService } from '../../../../../../services/clientes.service';
@@ -19,6 +18,9 @@ import { EstadoService } from '../../../../../../services/estado.service';
 import { filter, } from 'rxjs';
 import { AgregarMascotaComponent } from '../../../../components/agregar-mascota/agregar-mascota.component';
 import { Sexo } from '../../../../../../interfaces/sexo.interface';
+import { Estado } from '../../../../../../interfaces/estado.interface';
+import { Municipio } from '../../../../../../interfaces/municipio.interface';
+import { Localidad } from '../../../../../../interfaces/localidad.interface';
 
 interface ActionCliente{
   cliente: Cliente,
@@ -44,62 +46,91 @@ interface ActionCliente{
   ]
 })
 export class DialogClienteComponent {
+  // Validaciones
   form_cliente: FormGroup
   estadoControl: FormControl<number | null>
   municipioControl: FormControl<number | null>
   localidadControl: FormControl<number | null>
+  
+  // Datos
   sexos: Sexo[] = []
-  municipios: any
-  localidades: any
+  estados: Estado[] = []
+  municipios: Municipio[] = []
+  localidades: Localidad[] = []
   newlocalidad: number = 0
 
   constructor(public dialogRef: MatDialogRef<DialogClienteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ActionCliente, 
-    public clienteService: ClientesService,
-    public sexoService: SexoService,
-    public domicilioService: DomicilioService,
+    private clienteService: ClientesService,
+    private sexoService: SexoService,
     public localidadService: LocalidadService,
     public municipioService: MunicipioService,
     public estadoService: EstadoService,
     public mascotaService: MascotaService,
     public fb: FormBuilder) {
-      this.sexoService.getSexos()
-      .subscribe((data: Sexo[]) => {
-        this.sexos = data
-      })
+
+      this.initForm()
 
       if(data.cliente?.id){
-        //Init form values
-        const domicilio = this.domicilioService.getDomiciliobyId(data.cliente.domicilio)
-        const municipio = this.municipioService.getMunicipiobyId((this.localidadService.getLocalidadbyId(domicilio.localidad).municipio_id))
-        const estado = this.estadoService.getEstadobyId(municipio.estado_id)
 
-        this.municipios = this.municipioService.getMunicipiosbyEstadoId(estado.id)
-        this.localidades = this.localidadService.getLocalidadesbyMunicipioId(municipio.id)
+        let id_municipio = 0
+        let id_estado = 0
+        let id_localidad = 0
 
-        this.localidadControl = new FormControl<number | null>(domicilio.localidad, Validators.required)
-        this.municipioControl = new FormControl<number | null>(municipio.id, Validators.required)
-        this.estadoControl = new FormControl<number | null>(estado.id, Validators.required)
+        this.localidadService.getLocalidadbyId(data.cliente.domicilio.localidad)
+          .subscribe({
+            next: (data: Localidad) => {
+              id_localidad = data.id
+            },
+            complete: () => {
+              
+            }
+          })
 
-        //const mascotas = this.mascotaService.getMascotasbyIdCliente(data.cliente.id)
-        this.newlocalidad = domicilio.localidad
+          console.log(id_localidad)
+        // this.municipioService.getMunicipiosbyEstadoId(estado.id)
+        //   .subscribe({
+        //     next: (data: Municipio[]) => {
+        //       this.municipios = data
+        //     },
+        //     error: error => {
+        //       console.log(error)
+        //     }
+        //   })
+
+        // this.localidadService.getLocalidadesbyMunicipioId(municipio.id)
+        //   .subscribe({
+        //     next: (data: Localidad[]) => {
+        //       this.localidades = data
+        //     },
+        //     error: error => {
+        //       console.log(error)
+        //     }
+        //   })
+
+        this.localidadControl = new FormControl<number | null>(id_localidad, Validators.required)
+        this.municipioControl = new FormControl<number | null>(id_municipio, Validators.required)
+        this.estadoControl = new FormControl<number | null>(id_estado, Validators.required)
+
         this.form_cliente = fb.group({
           id: [data.cliente.id],
           nombre: [data.cliente.nombre, [Validators.required]],
           primerap: [data.cliente.primerApellido, [Validators.required]],
           segundoap: [data.cliente.segundoApellido, [Validators.required]],
           correo: [data.cliente.email, [Validators.required, Validators.email]],
-          sexo: [data.cliente.sexo, [Validators.required]],
+          sexo: [data.cliente.sexo.id, [Validators.required]],
           telefono: [data.cliente.telefono, [Validators.required]],
           telefonoFijo: [data.cliente.telefonoFijo, [Validators.required]],
           curp: [data.cliente.curp.toUpperCase(), [Validators.required]],
           //Domicilio
-          domid: [domicilio.id],
-          calle: [domicilio.calle, [Validators.required]],
-          interior: [domicilio.numeroInterior, [Validators.required]],
-          exterior: [domicilio.numeroExterior, [Validators.required]],
-          postal: [domicilio.codigoPostal, [Validators.required]],
+          domid: [data.cliente.domicilio.id],
+          calle: [data.cliente.domicilio.calle, [Validators.required]],
+          interior: [data.cliente.domicilio.numeroInterior, [Validators.required]],
+          exterior: [data.cliente.domicilio.numeroExterior, [Validators.required]],
+          postal: [data.cliente.domicilio.codigoPostal, [Validators.required]],
           localidad: this.localidadControl,
+          municipio: this.municipioControl,
+          estado: this.estadoControl,
           //Mascotas
           // mascotas: [mascotas, [Validators.length > 1]]
         })
@@ -126,10 +157,28 @@ export class DialogClienteComponent {
           exterior: ['', [Validators.required]],
           postal: ['', [Validators.required]],
           localidad: this.localidadControl,
+          municipio: this.municipioControl,
+          estado: this.estadoControl,
           // mascotas: [[], [Validators.length > 1]]
         })  
       }
 
+      this.detectedChanges()
+  }
+
+  initForm(): void{
+    this.sexoService.getSexos()
+      .subscribe((data: Sexo[]) => {
+        this.sexos = data
+      })
+
+    this.estadoService.getEstados()
+      .subscribe((data: Estado[]) => {
+        this.estados = data
+      })
+  }
+
+  detectedChanges(): void{
     this.estadoControl.valueChanges
       .pipe(
         // Filter null value and Estado
@@ -137,7 +186,15 @@ export class DialogClienteComponent {
       ).forEach(element => {
         this.municipioControl.reset()
         this.localidadControl.reset()
-        this.municipios = this.municipioService.getMunicipiosbyEstadoId(element)
+        this.municipioService.getMunicipiosbyEstadoId(element)
+          .subscribe({
+            next: (data: Municipio[]) => {
+              this.municipios = data
+            },
+            error: error => {
+              console.log(error)
+            }
+          })
       });
 
     this.municipioControl.valueChanges
@@ -146,8 +203,16 @@ export class DialogClienteComponent {
         filter((value): value is number => value !== null),
       ).forEach(element => {
         this.localidadControl.reset()
-        this.localidades = this.localidadService.getLocalidadesbyMunicipioId(element)
-    });
+        this.localidadService.getLocalidadesbyMunicipioId(element)
+          .subscribe({
+            next: (data: Localidad[]) => {
+              this.localidades = data
+            },
+            error: error => {
+              console.log(error)
+            }
+          })
+      });
 
     this.localidadControl.valueChanges
       .pipe(
@@ -156,9 +221,7 @@ export class DialogClienteComponent {
       ).forEach(element => {
         this.newlocalidad = element
       });
-
   }
-
 
 
   saveCliente(): void{
@@ -184,16 +247,12 @@ export class DialogClienteComponent {
         telefono: data_cliente.telefono,
         telefonoFijo: data_cliente.telefonoFijo,
         curp: data_cliente.curp,
-        domicilio: data_cliente.domid
+        domicilio: domicilio
       }
 
-      
-
       if (cliente.id) {
-        this.domicilioService.updateDomicilio(domicilio)
         this.clienteService.updateCliente(cliente)
       } else {
-        cliente.domicilio = this.domicilioService.addDomicilio(domicilio).id
         this.clienteService.addCliente(cliente)
       }
     }

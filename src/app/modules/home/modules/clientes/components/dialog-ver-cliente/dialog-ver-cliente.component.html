@@ -8,22 +8,21 @@
                 <span>Segundo Apellido: <b>{{data.segundoApellido | titlecase}}</b></span>
                 <span>Correo: <b>{{data.email | lowercase}}</b></span>
                 <span>CURP: <b>{{data.curp | uppercase}}</b></span>
-                <span>Sexo: <b>{{getSexo(data.sexo)}}</b> </span>
+                <span>Sexo: <b>{{data.sexo.nombre}}</b> </span>
                 <span>Telefono: <b>{{data.telefono}}</b></span>
                 <span>Telefono Fijo: <b>{{data.telefonoFijo}}</b></span>
             </section>
             <section>
+                <h2>Dirección</h2>
                 @if(domicilio.id){
-                    <h2>Dirección</h2>
-                    <span>Calle: <b>{{domicilio.calle| uppercase}}</b></span>
-                    <span>Número Exterior: <b>{{domicilio.numeroExterior| uppercase}}</b></span>
-                    <span>Número Interior: <b>{{domicilio.numeroInterior| uppercase}}</b></span>
-                    <span>Estado: <b>{{estado.nombre| uppercase}}</b></span>
-                    <span>Municipio: <b>{{municipio.nombre| uppercase}}</b></span>
-                    <span>Colonia: <b>{{localidad.nombre| uppercase}}</b></span>
-                    <span>Código Postal: <b>{{domicilio.codigoPostal| uppercase}}</b></span>                
+                    <span>Calle: <b>{{domicilio.calle | uppercase}}</b></span>
+                    <span>Número Exterior: <b>{{domicilio.numeroExterior | uppercase}}</b></span>
+                    <span>Número Interior: <b>{{domicilio.numeroInterior | uppercase}}</b></span>
+                    <span>Estado: <b>{{estado.nombre | uppercase}}</b></span>
+                    <span>Municipio: <b>{{municipio.nombre | uppercase}}</b></span>
+                    <span>Colonia: <b>{{localidad.nombre | uppercase}}</b></span>
+                    <span>Código Postal: <b>{{domicilio.codigoPostal | uppercase}}</b></span>                
                 } @else {
-                    <h2>Dirección</h2>
                     <span>Sin domicilio</span>
                 }
             </section>
@@ -31,11 +30,11 @@
             <section>
                 <h2>Información de las Mascotas</h2>
                 @if (mascotas.length == 0) {
-                <span>No existen mascotas registradas</span>
+                    <span>No existen mascotas registradas</span>
                 } @else {
-                <mat-chip-set>
-                    <app-mostrar-mascota *ngFor="let mascota of mascotas" [mascota]="mascota"></app-mostrar-mascota>
-                </mat-chip-set>
+                    <mat-chip-set>
+                        <app-mostrar-mascota *ngFor="let mascota of mascotas" [mascota]="mascota"></app-mostrar-mascota>
+                    </mat-chip-set>
                 }
             </section>
 

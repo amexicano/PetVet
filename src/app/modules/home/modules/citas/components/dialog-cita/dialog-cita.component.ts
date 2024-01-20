@@ -55,7 +55,7 @@ export class DialogCitaComponent {
   // estilistaControl1!: FormControl<number | null>
   // estilistaControl2!: FormControl<number | null>
   // estilistaControl3!: FormControl<number | null>
-  
+  clientes: Cliente[] = []
   mascotas: Mascota[] = []
   horarios: Horarios[] = []
   estilistas: Empleado[] = []
@@ -73,7 +73,15 @@ export class DialogCitaComponent {
       this.clienteControl = new FormControl<number | null>(null, Validators.required)
       this.mascotaControl = new FormControl<number | null>(null, Validators.required)
 
-      this.horarios = this.horariosService.getHorarios()
+      this.clienteService.getClientes()
+      .subscribe((data: Cliente[]) => {
+        this.clientes = data;
+      })
+
+      this.horariosService.getHorarios()
+      .subscribe((data: Horarios[]) => {
+        this.horarios = data;
+      })
 
       this.empleadosService.getEmpleadosByRol(3).
       subscribe((data: Empleado[]) => {

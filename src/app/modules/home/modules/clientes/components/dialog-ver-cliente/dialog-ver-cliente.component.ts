@@ -3,9 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { Cliente } from '../../../../../../interfaces/cliente.interface';
-import { SexoService } from '../../../../../../services/sexo.service';
 import { Domicilio } from '../../../../../../interfaces/domicilio.interface';
-import { DomicilioService } from '../../../../../../services/domicilio.service';
 import { Mascota } from '../../../../../../interfaces/mascota.interface';
 import { MostrarMascotaComponent } from '../../../../components/mostrar-mascota/mostrar-mascota.component';
 import { MascotaService } from '../../../../../../services/mascota.service';
@@ -16,7 +14,6 @@ import { MunicipioService } from '../../../../../../services/municipio.service';
 import { EstadoService } from '../../../../../../services/estado.service';
 import { Municipio } from '../../../../../../interfaces/municipio.interface';
 import { Estado } from '../../../../../../interfaces/estado.interface';
-import { Sexo } from '../../../../../../interfaces/sexo.interface';
 @Component({
   selector: 'app-dialog-ver-cliente',
   standalone: true,
@@ -31,64 +28,69 @@ import { Sexo } from '../../../../../../interfaces/sexo.interface';
   ],
 })
 export class DialogVerClienteComponent {
-  mascotas!: Mascota[]
-  domicilio!: Domicilio
-  localidad!: Localidad
-  municipio!: Municipio
-  estado!: Estado
+  mascotas: Mascota[] = []
+  domicilio: Domicilio = {
+    id: 0,
+    calle: '',
+    numeroInterior: '',
+    numeroExterior: '',
+    localidad: 0,
+    codigoPostal: '',
+  }
+  localidad: Localidad = {
+    id: 0,
+    nombre: '',
+    municipio: 0
+  }
+
+  municipio: Municipio = {
+    id: 0,
+    nombre: '',
+    estado: 0
+  }
+  
+  estado: Estado = {
+    id: 0,
+    nombre: '',
+    siglas: ''
+  }
 
   constructor(public dialogRef: MatDialogRef<DialogVerClienteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Cliente,
-    private sexoService: SexoService,
-    public domicilioService: DomicilioService,
     public localidadService: LocalidadService,
     public municipioService: MunicipioService,
     public estadoService: EstadoService,
     public mascotaService: MascotaService) {
       if(data){
-        this.mascotas = this.mascotaService.getMascotasbyIdCliente(data.id)
-        this.domicilio = this.domicilioService.getDomiciliobyId(data.domicilio)
-        this.localidad = this.localidadService.getLocalidadbyId(this.domicilio.localidad)
-        this.municipio = this.municipioService.getMunicipiobyId(this.localidad.municipio_id)
-        this.estado = this.estadoService.getEstadobyId(this.municipio.estado_id)
+        //this.mascotas = this.mascotaService.getMascotasbyIdCliente(data.id)
+        this.domicilio = data.domicilio
 
-      } else {
-        this.mascotas = []
-        this.domicilio = {
-          id: 0,
-          calle: '',
-          numeroInterior: '',
-          numeroExterior: '',
-          localidad: 0,
-          codigoPostal: '',
-        }
-        this.localidad = {
-          id: 0,
-          nombre: '',
-          municipio_id: 0
-        }
-        this.municipio = {
-          id: 0,
-          nombre: '',
-          estado_id: 0
-        }
-        this.estado = {
-          id: 0,
-          nombre: '',
-          sigla: ''
-        }
-      }
+        this.localidadService.getLocalidadbyId(data.domicilio.localidad)
+        .subscribe({
+          next:(data: Localidad) => {
+            this.localidad = {...data}
+          },
+          complete: () => {
+            this.municipioService.getMunicipiobyId(this.localidad.municipio)
+              .subscribe({
+                next: (data: Municipio) => {
+                  this.municipio = data
+                },
+                complete: () => {
+                  this.estadoService.getEstadobyId(this.municipio.estado)
+                    .subscribe({
+                      next: (data: Estado) => {
+                        this.estado = data
+                      }
+                    })
+                }
+            })
+          }
+        })
+      } 
   }
 
   onNoClick = (): void => {
     this.dialogRef.close();
-  }
-
-  getSexo(id: number): string {
-    this.sexoService.getSexobyId(id).
-    subscribe((data: Sexo) => {
-      return data.nombre
-    })
-    return ''
   }
 }

@@ -33,11 +33,10 @@ export class TableClientesComponent {
 
   constructor(private clienteService: ClientesService,
     public dialog: MatDialog) {
-    this.dataSource = new MatTableDataSource<Cliente>(this.clienteService.getClientes());
-  }
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+      this.clienteService.getClientes().subscribe((clientes) => {
+        this.dataSource = new MatTableDataSource<Cliente>(clientes);
+        this.dataSource.paginator = this.paginator;
+      })
   }
 
   editarCliente(cliente: Cliente): void {
@@ -64,8 +63,10 @@ export class TableClientesComponent {
   }
 
   updateTable(): void {
-    this.dataSource = new MatTableDataSource<Cliente>(this.clienteService.getClientes());
-    this.dataSource.paginator = this.paginator;
+    this.clienteService.getClientes().subscribe((clientes) => {
+      this.dataSource = new MatTableDataSource<Cliente>(clientes);
+      this.dataSource.paginator = this.paginator;
+    })
   }
 
 }

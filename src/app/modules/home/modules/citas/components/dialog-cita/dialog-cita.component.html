@@ -7,7 +7,7 @@
                     <mat-form-field>
                         <mat-label>Cliente</mat-label>
                         <mat-select id="cliente" [formControl]="clienteControl" name="cliente">
-                            @for (cliente of clienteService.getClientes(); track cliente) {
+                            @for (cliente of clientes; track cliente) {
                                 <mat-option [value]="cliente.id">{{cliente.nombre}} - {{cliente.curp | uppercase}}</mat-option>
                             }
                         </mat-select>

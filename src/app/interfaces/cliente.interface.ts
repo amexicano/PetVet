@@ -1,3 +1,6 @@
+import { Domicilio } from "./domicilio.interface";
+import { Sexo } from "./sexo.interface";
+
 export interface Cliente {
     id: number;
     nombre: string;
@@ -5,8 +8,8 @@ export interface Cliente {
     segundoApellido: string;
     telefonoFijo: string;
     telefono: string;
-    sexo: number;
+    sexo: Sexo;
     email: string;
     curp: string;
-    domicilio: number;
+    domicilio: Domicilio;
 }

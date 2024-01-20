@@ -1,46 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Horarios } from '../interfaces/horarios.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HorariosService {
-  _DATA !: Horarios[];
-  constructor() { 
-    this._DATA = [
-      {
-        id: 1,
-        horario: '09:00 a.m. - 11:00 a.m.',
-        activo: true,
-      },
-      {
-        id: 2,
-        horario: '11:00 a.m. - 1:00 p.m.',
-        activo: true,
-      },
-      {
-        id: 3,
-        horario: '1:00 p.m. - 3:00 p.m.',
-        activo: false,
-      },
-      {
-        id: 4,
-        horario: '4:00 p.m. - 6:00 p.m.',
-        activo: true,
-      },
-      {
-        id: 5,
-        horario: '6:00 p.m. - 8:00 p.m.',
-        activo: true,
-      },
-    ];
+
+  constructor(private httpClient: HttpClient) { 
   }
 
-  getHorarios = (): Horarios[] => {
-    return this._DATA;
+  getHorarios = () => {
+    return this.httpClient.get<Horarios[]>('http://localhost:9090/horarios');
   }
 
-  getHorario = (id: number): Horarios => {
-    return this._DATA.find((horario) => horario.id === id)!;
+  getHorario = (id: number) => {
+    return this.httpClient.get<Horarios>(`http://localhost:9090/horarios/${id}`);
   }
 }

@@ -73,8 +73,8 @@
                 <mat-form-field>
                     <mat-label>Estado</mat-label>
                     <mat-select [formControl]="estadoControl">
-                        @for(estado of estadoService.getEstados(); track estado){
-                        <mat-option [value]="estado.id">{{estado.nombre}}</mat-option>
+                        @for(estado of estados; track estado){
+                        <mat-option [value]="estado.id">{{estado.nombre}} - {{estado.siglas}}</mat-option>
                         }
                     </mat-select>
                 </mat-form-field>

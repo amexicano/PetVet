@@ -1,31 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Localidad } from '../interfaces/localidad.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalidadService {
-  _DATA!: Localidad[];
-  constructor() { 
-    this._DATA = [
-      { id: 1, nombre: 'Acrelândia', municipio_id: 1 },
-      { id: 2, nombre: 'Assis Brasil', municipio_id: 1 },
-      { id: 3, nombre: 'Água Branca', municipio_id: 2 },
-      { id: 4, nombre: 'Anadia', municipio_id: 2 },
-      { id: 5, nombre: 'Arapiraca', municipio_id: 3 },
-      { id: 6, nombre: 'Atalaia', municipio_id: 3 },
-      { id: 7, nombre: 'Barra de Santo Antônio', municipio_id: 4 },
-      { id: 8, nombre: 'Barra de São Miguel', municipio_id: 4 },
-    ]
-  }
+  constructor(private httpClient: HttpClient) { }
   
-  getLocalidadbyId(id: number): Localidad {
-    return this._DATA
-      .filter(localidad => localidad.id === id)[0]
+  getLocalidadbyId(id: number) {
+    return this.httpClient.get<Localidad>(`http://localhost:9090/localidades/${id}`)
   }
 
-  getLocalidadesbyMunicipioId(municipio_id: number): Localidad[] {
-    return this._DATA
-      .filter(localidad => localidad.municipio_id === municipio_id)
+  getLocalidadesbyMunicipioId(municipio_id: number) {
+    return this.httpClient.get<Localidad[]>(`http://localhost:9090/localidades/${municipio_id}/municipios`)
   }
 }

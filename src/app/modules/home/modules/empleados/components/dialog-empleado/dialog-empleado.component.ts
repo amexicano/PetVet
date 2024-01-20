@@ -73,9 +73,9 @@ export class DialogEmpleadoComponent {
       if (data.empleado){
         this.form_empleado = fb.group({
           id: [data.empleado?.id, []],
-          nombre: [data.empleado?.nombre, [Validators.required, Validators.pattern('[a-zA-Z\u00f1\u00d1 ]*')]],
-          primerap: [data.empleado?.primerApellido, [Validators.required, Validators.pattern('[a-zA-Z\u00f1\u00d1 ]*')]],
-          segundoap: [data.empleado?.segundoApellido, [Validators.required, Validators.pattern('[a-zA-Z\u00f1\u00d1 ]*')]],
+          nombre: [data.empleado?.nombre, [Validators.required]],
+          primerap: [data.empleado?.primerApellido, [Validators.required]],
+          segundoap: [data.empleado?.segundoApellido, [Validators.required]],
           correo: [data.empleado?.email, [Validators.required, Validators.email]],
           telefono: [data.empleado?.telefono, [Validators.required]],
           fechaNacimiento: [data.empleado?.fechaNacimiento, [Validators.required]],

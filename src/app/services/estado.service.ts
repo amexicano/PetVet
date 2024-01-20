@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Estado } from '../interfaces/estado.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EstadoService {
   _DATA!: Estado[]
-  constructor() {
+  constructor(private httpClient: HttpClient) {
     this._DATA = [
-      { id: 1, nombre: 'Acre', sigla: 'AC' },
-      { id: 2, nombre: 'Alagoas', sigla: 'AL' },
+      { id: 1, nombre: 'Acre', siglas: 'AC' },
+      { id: 2, nombre: 'Alagoas', siglas: 'AL' },
     ]
   }
-  getEstadobyId(id: number): Estado {
-    return this._DATA
-      .filter(estado => estado.id === id)[0]
+  getEstadobyId(id: number) {
+    return this.httpClient.get<Estado>(`http://localhost:9090/estados/${id}`)
   }
 
-  getEstados(): Estado[] {
-    return this._DATA
+  getEstados() {
+    return this.httpClient.get<Estado[]>('http://localhost:9090/estados')
   }
 }
