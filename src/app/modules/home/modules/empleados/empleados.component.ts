@@ -54,7 +54,9 @@ export class EmpleadosComponent {
     });
 
     this.dialog.afterAllClosed.subscribe(() => {
-      this.tableEmpleados.updateTable();
+      setTimeout(() => {
+        this.tableEmpleados.updateTable();
+      }, 500);
     });
   }
 }

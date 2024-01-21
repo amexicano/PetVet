@@ -36,8 +36,12 @@ export class ClientesService {
     return this.httpClient.get<Cliente[]>('http://localhost:9090/clientes')
   }
 
-  getClienteById(id: number): Cliente {
-    return this._DATA.filter(cliente => cliente.id == id)[0]
+  getClienteById(id: number){
+    return this.httpClient.get<Cliente>(`http://localhost:9090/clientes/${id}`)
+  }
+
+  getClienteByCURP(curp: string){
+    return this.httpClient.get<Cliente>(`http://localhost:9090/clientes/curp/${curp}`)
   }
 
   eliminarCliente(id: number): void {
@@ -57,11 +61,6 @@ export class ClientesService {
       }
       return e;
     });
-  }
-
-  getClienteByCURP(curp: string): Cliente {
-    curp = curp.toLowerCase();
-    return this._DATA.find((cliente) => cliente.curp.toLowerCase() === curp)!;
   }
 
 }

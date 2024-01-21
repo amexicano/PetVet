@@ -6,13 +6,8 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class EstadoService {
-  _DATA!: Estado[]
-  constructor(private httpClient: HttpClient) {
-    this._DATA = [
-      { id: 1, nombre: 'Acre', siglas: 'AC' },
-      { id: 2, nombre: 'Alagoas', siglas: 'AL' },
-    ]
-  }
+  constructor(private httpClient: HttpClient) { }
+
   getEstadobyId(id: number) {
     return this.httpClient.get<Estado>(`http://localhost:9090/estados/${id}`)
   }

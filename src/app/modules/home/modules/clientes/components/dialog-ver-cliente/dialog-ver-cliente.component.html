@@ -1,45 +1,45 @@
 <h1 mat-dialog-title>Ver Cliente</h1>
 <mat-dialog-content>
-    @if(data){
-            <section>
-                <h2>Información del Cliente</h2>
-                <span>Nombre: <b>{{data.nombre | titlecase}}</b></span>
-                <span>Primer Apellido: <b>{{data.primerApellido | titlecase}}</b></span>
-                <span>Segundo Apellido: <b>{{data.segundoApellido | titlecase}}</b></span>
-                <span>Correo: <b>{{data.email | lowercase}}</b></span>
-                <span>CURP: <b>{{data.curp | uppercase}}</b></span>
-                <span>Sexo: <b>{{data.sexo.nombre}}</b> </span>
-                <span>Telefono: <b>{{data.telefono}}</b></span>
-                <span>Telefono Fijo: <b>{{data.telefonoFijo}}</b></span>
-            </section>
-            <section>
-                <h2>Dirección</h2>
-                @if(domicilio.id){
-                    <span>Calle: <b>{{domicilio.calle | uppercase}}</b></span>
-                    <span>Número Exterior: <b>{{domicilio.numeroExterior | uppercase}}</b></span>
-                    <span>Número Interior: <b>{{domicilio.numeroInterior | uppercase}}</b></span>
-                    <span>Estado: <b>{{estado.nombre | uppercase}}</b></span>
-                    <span>Municipio: <b>{{municipio.nombre | uppercase}}</b></span>
-                    <span>Colonia: <b>{{localidad.nombre | uppercase}}</b></span>
-                    <span>Código Postal: <b>{{domicilio.codigoPostal | uppercase}}</b></span>                
-                } @else {
-                    <span>Sin domicilio</span>
-                }
-            </section>
-
-            <section>
-                <h2>Información de las Mascotas</h2>
-                @if (mascotas.length == 0) {
-                    <span>No existen mascotas registradas</span>
-                } @else {
-                    <mat-chip-set>
-                        <app-mostrar-mascota *ngFor="let mascota of mascotas" [mascota]="mascota"></app-mostrar-mascota>
-                    </mat-chip-set>
-                }
-            </section>
-
-    } @else {
+    @if(!data){
         <span>Cliente no encontrado</span>
+    } @else {
+        <section>
+            <h2>Información del Cliente</h2>
+            <span>Nombre: <b>{{data.nombre | titlecase}}</b></span>
+            <span>Primer Apellido: <b>{{data.primerApellido | titlecase}}</b></span>
+            <span>Segundo Apellido: <b>{{data.segundoApellido | titlecase}}</b></span>
+            <span>Correo: <b>{{data.email | lowercase}}</b></span>
+            <span>CURP: <b>{{data.curp | uppercase}}</b></span>
+            <span>Sexo: <b>{{data.sexo.nombre}}</b> </span>
+            <span>Telefono: <b>{{data.telefono}}</b></span>
+            <span>Telefono Fijo: <b>{{data.telefonoFijo}}</b></span>
+        </section>
+        <section>
+            <h2>Dirección</h2>
+            @if(domicilio.id){
+            <span>Calle: <b>{{domicilio.calle | uppercase}}</b></span>
+            <span>Número Exterior: <b>{{domicilio.numeroExterior | uppercase}}</b></span>
+            <span>Número Interior: <b>{{domicilio.numeroInterior | uppercase}}</b></span>
+            <span>Estado: <b>{{estado.nombre | uppercase}}</b></span>
+            <span>Municipio: <b>{{municipio.nombre | uppercase}}</b></span>
+            <span>Colonia: <b>{{localidad.nombre | uppercase}}</b></span>
+            <span>Código Postal: <b>{{domicilio.codigoPostal | uppercase}}</b></span>
+            } @else {
+            <span>Sin domicilio</span>
+            }
+        </section>
+        
+        <section>
+            <h2>Información de las Mascotas</h2>
+            @if (mascotas.length == 0) {
+            <span>No existen mascotas registradas</span>
+            } @else {
+            <mat-chip-set>
+                <app-mostrar-mascota *ngFor="let mascota of mascotas" [mascota]="mascota"></app-mostrar-mascota>
+            </mat-chip-set>
+            }
+        </section>
+
     }
 </mat-dialog-content>
 <mat-dialog-actions>

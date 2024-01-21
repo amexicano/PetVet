@@ -6,6 +6,7 @@ import { ClientesService } from '../../../../services/clientes.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogVerClienteComponent } from './components/dialog-ver-cliente/dialog-ver-cliente.component';
 import { DialogClienteComponent } from './components/dialog-cliente/dialog-cliente.component';
+import { Cliente } from '../../../../interfaces/cliente.interface';
 
 @Component({
   selector: 'app-clientes',
@@ -27,11 +28,21 @@ export class ClientesComponent {
 
 
   findCliente = (event: string): void => {
-    const cliente = this.clientesService.getClienteByCURP(event.toLowerCase());
-    const dialogRef = this.dialog.open(DialogVerClienteComponent, {
-      width: '95%',
-      data: cliente,
-    });
+    this.clientesService.getClienteByCURP(event)
+    .subscribe({
+      next: (cliente) => {
+        this.dialog.open(DialogVerClienteComponent, {
+          width: '95%',
+          data: cliente,
+        })
+      },
+      error: (err) => {
+        this.dialog.open(DialogVerClienteComponent, {
+          width: '95%',
+          data: null,
+        })
+      }
+    })
   }
 
   nuevoCliente = (): void => {

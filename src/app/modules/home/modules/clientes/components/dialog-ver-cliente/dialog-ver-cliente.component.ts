@@ -14,6 +14,7 @@ import { MunicipioService } from '../../../../../../services/municipio.service';
 import { EstadoService } from '../../../../../../services/estado.service';
 import { Municipio } from '../../../../../../interfaces/municipio.interface';
 import { Estado } from '../../../../../../interfaces/estado.interface';
+import { switchMap } from 'rxjs';
 @Component({
   selector: 'app-dialog-ver-cliente',
   standalone: true,
@@ -29,32 +30,11 @@ import { Estado } from '../../../../../../interfaces/estado.interface';
 })
 export class DialogVerClienteComponent {
   mascotas: Mascota[] = []
-  domicilio: Domicilio = {
-    id: 0,
-    calle: '',
-    numeroInterior: '',
-    numeroExterior: '',
-    localidad: 0,
-    codigoPostal: '',
-  }
-  localidad: Localidad = {
-    id: 0,
-    nombre: '',
-    municipio: 0
-  }
-
-  municipio: Municipio = {
-    id: 0,
-    nombre: '',
-    estado: 0
-  }
+  domicilio!: Domicilio
+  localidad!: Localidad
+  municipio!: Municipio
+  estado!: Estado
   
-  estado: Estado = {
-    id: 0,
-    nombre: '',
-    siglas: ''
-  }
-
   constructor(public dialogRef: MatDialogRef<DialogVerClienteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Cliente,
     public localidadService: LocalidadService,
@@ -62,29 +42,29 @@ export class DialogVerClienteComponent {
     public estadoService: EstadoService,
     public mascotaService: MascotaService) {
       if(data){
-        //this.mascotas = this.mascotaService.getMascotasbyIdCliente(data.id)
+        //this.mascotas = 
+        this.mascotaService.getMascotasbyIdCliente(data.id).subscribe({
+          next: (data: Mascota[]) => {
+            this.mascotas = data
+          }
+        })
+
         this.domicilio = data.domicilio
 
         this.localidadService.getLocalidadbyId(data.domicilio.localidad)
-        .subscribe({
-          next:(data: Localidad) => {
-            this.localidad = {...data}
-          },
-          complete: () => {
-            this.municipioService.getMunicipiobyId(this.localidad.municipio)
-              .subscribe({
-                next: (data: Municipio) => {
-                  this.municipio = data
-                },
-                complete: () => {
-                  this.estadoService.getEstadobyId(this.municipio.estado)
-                    .subscribe({
-                      next: (data: Estado) => {
-                        this.estado = data
-                      }
-                    })
-                }
-            })
+        .pipe(
+          switchMap((data: Localidad) => {
+            this.localidad = { ...data}
+            return this.municipioService.getMunicipiobyId(data.municipio)
+          }),
+          switchMap((data: Municipio) => {
+            this.municipio = { ...data}
+            return this.estadoService.getEstadobyId(data.estado)
+          })
+        )
+        .subscribe({           
+          next: (data: Estado) => {
+            this.estado = {...data}
           }
         })
       } 
