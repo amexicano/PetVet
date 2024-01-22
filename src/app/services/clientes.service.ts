@@ -44,23 +44,16 @@ export class ClientesService {
     return this.httpClient.get<Cliente>(`http://localhost:9090/clientes/curp/${curp}`)
   }
 
-  eliminarCliente(id: number): void {
-    this._DATA = this._DATA.filter((cliente) => cliente.id !== id);
+  eliminarCliente(id: number) {
+    return this.httpClient.delete<Cliente>(`http://localhost:9090/clientes/${id}`)
   }
 
-  addCliente(cliente: Cliente): void {
-    cliente.id = this._DATA.length + 1
-    this._DATA.push(cliente);
-    console.table(this._DATA)
+  addCliente(cliente: Cliente) {
+    return this.httpClient.post<Cliente>('http://localhost:9090/clientes', cliente)
   }
 
-  updateCliente(cliente: Cliente): void {
-    this._DATA = this._DATA.map((e) => {
-      if (e.id === cliente.id) {
-        return cliente;
-      }
-      return e;
-    });
+  updateCliente(cliente: Cliente) {
+    return this.httpClient.put<Cliente>(`http://localhost:9090/clientes/${cliente.id}`, cliente)
   }
 
 }

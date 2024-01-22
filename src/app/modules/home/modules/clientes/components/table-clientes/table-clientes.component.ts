@@ -51,8 +51,10 @@ export class TableClientesComponent {
   }
 
   eliminarCliente(cliente: Cliente): void {
-    this.clienteService.eliminarCliente(cliente.id);
-    this.updateTable();
+    this.clienteService.eliminarCliente(cliente.id)
+    .subscribe((cliente) => {
+      this.updateTable();
+    })
   }
 
   mostrarCliente(cliente: Cliente): void {

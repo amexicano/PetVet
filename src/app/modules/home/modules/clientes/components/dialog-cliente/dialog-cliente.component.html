@@ -100,11 +100,42 @@
             </section>
         </section>
         <h1>Mascotas</h1>
-        <app-agregar-mascota></app-agregar-mascota>
+        <section class="wrapper" formArrayName="mascotas">
+            <section class="column" [formGroupName]="i" *ngFor="let mascota of mascotasFormArray.controls; let i = index">
+                <h2>Mascota {{i + 1}}</h2>
+                <mat-divider></mat-divider>
+                <h3>Nombre: </h3>
+                <mat-form-field>
+                    <mat-label>Nombre de la mascota</mat-label>
+                    <input type="text" matInput formControlName="nombre">
+                </mat-form-field>
+                <h3>Descripción: </h3>
+                <mat-form-field>
+                    <mat-label>Descripcion</mat-label>
+                    <textarea matInput formControlName="descripcion"></textarea>
+                </mat-form-field>
+                <h3>Raza: </h3>
+                <mat-form-field>
+                    <mat-label>Raza</mat-label>
+                    <mat-select formControlName="raza">
+                        @for(raza of razas; track raza){
+                        <mat-option [value]="raza.id">{{raza.nombre}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                <mat-checkbox color="primary" labelPosition="after" formControlName="activo">Activo</mat-checkbox>
+            </section>
+        </section>
+        <section class="banner">
+            <button mat-button type="submit" mat-raised-button color="primary" (click)="agregarMascota()">Agregar Mascota</button>
+            <button mat-button color="warn" (click)="eliminarMascota()" [disabled]="mascotasFormArray.controls.length <= 1">Eliminar Mascota</button>
+        </section>
+
     </mat-dialog-content>
     <mat-dialog-actions>
-        <button mat-button type="submit" (click)="saveCliente()" mat-raised-button color="primary"
-            [disabled]="form_cliente.invalid">{{data.action}}</button>
+        <!-- <button mat-button type="submit" (click)="saveCliente()" mat-raised-button color="primary"
+            [disabled]="form_cliente.invalid">{{data.action}}</button> -->
+        <button mat-button type="submit" (click)="saveCliente()" mat-raised-button color="primary">{{data.action}}</button>
         <button mat-button color="warn" (click)="this.dialogRef.close()">Cancelar</button>
     </mat-dialog-actions>
 </form>

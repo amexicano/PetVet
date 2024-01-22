@@ -5,7 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { Cliente } from '../../../../../../interfaces/cliente.interface';
 import { Domicilio } from '../../../../../../interfaces/domicilio.interface';
 import { Mascota } from '../../../../../../interfaces/mascota.interface';
-import { MostrarMascotaComponent } from '../../../../components/mostrar-mascota/mostrar-mascota.component';
 import { MascotaService } from '../../../../../../services/mascota.service';
 import { MatChipsModule } from '@angular/material/chips';
 import { Localidad } from '../../../../../../interfaces/localidad.interface';
@@ -15,6 +14,7 @@ import { EstadoService } from '../../../../../../services/estado.service';
 import { Municipio } from '../../../../../../interfaces/municipio.interface';
 import { Estado } from '../../../../../../interfaces/estado.interface';
 import { switchMap } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-dialog-ver-cliente',
   standalone: true,
@@ -25,7 +25,7 @@ import { switchMap } from 'rxjs';
     MatDialogModule,
     MatButtonModule,
     MatChipsModule,
-    MostrarMascotaComponent
+    MatIconModule,
   ],
 })
 export class DialogVerClienteComponent {
@@ -42,7 +42,6 @@ export class DialogVerClienteComponent {
     public estadoService: EstadoService,
     public mascotaService: MascotaService) {
       if(data){
-        //this.mascotas = 
         this.mascotaService.getMascotasbyIdCliente(data.id).subscribe({
           next: (data: Mascota[]) => {
             this.mascotas = data

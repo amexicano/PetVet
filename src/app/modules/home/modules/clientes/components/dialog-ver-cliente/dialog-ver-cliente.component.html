@@ -20,10 +20,10 @@
             <span>Calle: <b>{{domicilio.calle | uppercase}}</b></span>
             <span>Número Exterior: <b>{{domicilio.numeroExterior | uppercase}}</b></span>
             <span>Número Interior: <b>{{domicilio.numeroInterior | uppercase}}</b></span>
+            <span>Código Postal: <b>{{domicilio.codigoPostal | uppercase}}</b></span>
             <span>Estado: <b>{{estado.nombre | uppercase}}</b></span>
             <span>Municipio: <b>{{municipio.nombre | uppercase}}</b></span>
             <span>Colonia: <b>{{localidad.nombre | uppercase}}</b></span>
-            <span>Código Postal: <b>{{domicilio.codigoPostal | uppercase}}</b></span>
             } @else {
             <span>Sin domicilio</span>
             }
@@ -35,7 +35,12 @@
             <span>No existen mascotas registradas</span>
             } @else {
             <mat-chip-set>
-                <app-mostrar-mascota *ngFor="let mascota of mascotas" [mascota]="mascota"></app-mostrar-mascota>
+                @for(mascota of mascotas; track mascota){
+                    <mat-chip>
+                        <mat-icon>pets</mat-icon>
+                        <span>{{mascota.nombre}}</span>
+                    </mat-chip>
+                }
             </mat-chip-set>
             }
         </section>

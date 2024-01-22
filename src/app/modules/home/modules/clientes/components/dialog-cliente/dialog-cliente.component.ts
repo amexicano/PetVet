@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Cliente } from '../../../../../../interfaces/cliente.interface';
 import { SexoService } from '../../../../../../services/sexo.service';
 import { MascotaService } from '../../../../../../services/mascota.service';
@@ -16,11 +16,15 @@ import { LocalidadService } from '../../../../../../services/localidad.service';
 import { MunicipioService } from '../../../../../../services/municipio.service';
 import { EstadoService } from '../../../../../../services/estado.service';
 import { filter, switchMap, } from 'rxjs';
-import { AgregarMascotaComponent } from '../../../../components/agregar-mascota/agregar-mascota.component';
+
 import { Sexo } from '../../../../../../interfaces/sexo.interface';
 import { Estado } from '../../../../../../interfaces/estado.interface';
 import { Municipio } from '../../../../../../interfaces/municipio.interface';
 import { Localidad } from '../../../../../../interfaces/localidad.interface';
+import { MatDividerModule } from '@angular/material/divider';
+import { Mascota } from '../../../../../../interfaces/mascota.interface';
+import { Raza } from '../../../../../../interfaces/raza.interface';
+import { RazaService } from '../../../../../../services/raza.service';
 
 interface ActionCliente{
   cliente: Cliente,
@@ -40,17 +44,17 @@ interface ActionCliente{
     MatSelectModule,
     MatButtonModule,
     MatInputModule,
+    MatDividerModule,
     ReactiveFormsModule,
     FormsModule,
-    AgregarMascotaComponent,
   ]
 })
 export class DialogClienteComponent {
   // Validaciones
   form_cliente: FormGroup
-  estadoControl: FormControl<number | null>
-  municipioControl: FormControl<number | null>
-  localidadControl: FormControl<number | null>
+  estadoControl: FormControl<number | null> = new FormControl<number | null>(null, Validators.required)
+  municipioControl: FormControl<number | null> = new FormControl<number | null>(null, Validators.required)
+  localidadControl: FormControl<number | null> = new FormControl<number | null>(null, Validators.required)
   
   // Datos
   sexos: Sexo[] = []
@@ -58,6 +62,10 @@ export class DialogClienteComponent {
   municipios: Municipio[] = []
   localidades: Localidad[] = []
   newlocalidad: number = 0
+
+  mascotas!: Mascota[]
+  razas!: Raza[]
+
 
   constructor(public dialogRef: MatDialogRef<DialogClienteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ActionCliente, 
@@ -67,16 +75,29 @@ export class DialogClienteComponent {
     public municipioService: MunicipioService,
     public estadoService: EstadoService,
     public mascotaService: MascotaService,
+    public razaService: RazaService,
     public fb: FormBuilder) {
-      this.estadoControl = new FormControl<number | null>(null, Validators.required)
-      this.municipioControl = new FormControl<number | null>(null, Validators.required)
-      this.localidadControl = new FormControl<number | null>(null, Validators.required)
+      
 
+      // Form Values of Sexo
+      this.sexoService.getSexos()
+      .subscribe((data: Sexo[]) => {
+        this.sexos = data
+      })
 
-      if(data.cliente?.id){
+      // Form Values of Estado
+      this.estadoService.getEstados()
+      .subscribe((data: Estado[]) => {
+        this.estados = data
+      })
 
-        this.initForm(data.cliente)
+      // Form Values of Raza
+      this.razaService.getRazas()
+      .subscribe((data: Raza[]) => {
+        this.razas = data
+      })
 
+      if(data.cliente != null && data.cliente?.id){
         this.form_cliente = fb.group({
           id: [data.cliente.id],
           nombre: [data.cliente.nombre, [Validators.required]],
@@ -96,12 +117,29 @@ export class DialogClienteComponent {
           localidad: this.localidadControl,
           municipio: this.municipioControl,
           estado: this.estadoControl,
-          //Mascotas
-          // mascotas: [mascotas, [Validators.length > 1]]
+          // Mascotas
+          mascotas: fb.array([])
         })
 
-      } else {
+        this.mascotaService.getMascotasbyIdCliente(data.cliente.id)
+        .subscribe((data: Mascota[]) => {
+          this.mascotas = data
+          data.forEach((mascota: Mascota) => {
+            // Add Mascota to FormArray
+            let mascotaGroup = this.fb.group({
+              id: [mascota.id],
+              nombre: [mascota.nombre],
+              raza: [mascota.raza],
+              descripcion: [mascota.descripcion],
+              activo: [mascota.activo],
+            })
+            this.mascotasFormArray.push(mascotaGroup)
+          })
+        })
 
+        this.initForm(data.cliente.domicilio)
+
+      }else{
         this.form_cliente = fb.group({
           id: [0],
           nombre: ['', [Validators.required]],
@@ -121,43 +159,85 @@ export class DialogClienteComponent {
           localidad: this.localidadControl,
           municipio: this.municipioControl,
           estado: this.estadoControl,
-          // mascotas: [[], [Validators.length > 1]]
+          mascotas: fb.array([
+            fb.group({
+              id: [0],
+              nombre: [''],
+              raza: [''],
+              descripcion: [''],
+              activo: [''],
+            })
+          ])
         })  
+
+        this.detectedChanges()
       }
-      this.detectedChanges()
   }
 
-  saveCliente(): void {
-    if (this.newlocalidad) {
-      const data_cliente = this.form_cliente.value
+  get mascotasFormArray(): FormArray {
+    return this.form_cliente.controls['mascotas'] as FormArray
+  }
 
-      const domicilio: Domicilio = {
+  eliminarMascota() {
+    this.mascotasFormArray.removeAt(this.mascotasFormArray.length - 1)
+  }
+
+  agregarMascota() {
+    this.mascotasFormArray.push(this.fb.group({
+      id: [0],
+      nombre: [''],
+      raza: [''],
+      descripcion: [''],
+      activo: [''],
+    }))
+  }
+
+
+  saveCliente(): void {
+    let newmascotas: Mascota[] = []
+
+    this.mascotasFormArray.controls
+    .forEach((mascota) => {
+      let newMascota: Mascota = {
+        id: mascota.value.id,
+        nombre: mascota.value.nombre,
+        descripcion: mascota.value.descripcion,
+        activo: mascota.value.activo,
+        raza: mascota.value.raza,
+        cliente: this.form_cliente.value.id
+      }
+      newmascotas.push(newMascota)
+    })
+
+    const data_cliente = this.form_cliente.value
+    
+    let cliente = {
+      id: data_cliente.id,
+      nombre: data_cliente.nombre,
+      primerApellido: data_cliente.primerap,
+      segundoApellido: data_cliente.segundoap,
+      email: data_cliente.correo,
+      sexo: data_cliente.sexo,
+      telefono: data_cliente.telefono,
+      telefonoFijo: data_cliente.telefonoFijo,
+      curp: data_cliente.curp,
+      domicilio: {
         id: data_cliente.domid,
         calle: data_cliente.calle,
         numeroInterior: data_cliente.interior,
         numeroExterior: data_cliente.exterior,
         codigoPostal: data_cliente.postal,
-        localidad: this.newlocalidad
-      }
+        localidad: this.newlocalidad,
+      },
+      mascotas: [...newmascotas]
+    }
 
-      let cliente: Cliente = {
-        id: data_cliente.id,
-        nombre: data_cliente.nombre,
-        primerApellido: data_cliente.primerap,
-        segundoApellido: data_cliente.segundoap,
-        email: data_cliente.correo,
-        sexo: data_cliente.sexo,
-        telefono: data_cliente.telefono,
-        telefonoFijo: data_cliente.telefonoFijo,
-        curp: data_cliente.curp,
-        domicilio: domicilio
-      }
-
-      if (cliente.id) {
-        this.clienteService.updateCliente(cliente)
-      } else {
-        this.clienteService.addCliente(cliente)
-      }
+    if (cliente.id) {
+      this.clienteService.updateCliente(cliente).
+        subscribe((data: Cliente) => {})
+    } else {
+      this.clienteService.addCliente(cliente)
+        .subscribe((data: Cliente) => {})
     }
 
     this.dialogRef.close()
@@ -165,81 +245,66 @@ export class DialogClienteComponent {
 
   detectedChanges(): void {
     this.estadoControl.valueChanges
-      .pipe(
-        filter((value): value is number => value !== null),
-        switchMap((value: number) => {
-          this.municipioControl.reset()
-          this.localidadControl.reset()
-          return this.municipioService.getMunicipiosbyEstadoId(value)
-        })
-      ).subscribe({
-        next: (data: Municipio[]) => {
-          this.municipios = data
-        },
+    .pipe(
+      filter((value): value is number => value !== null),
+      switchMap((value: number) => {
+        this.municipioControl.reset()
+        this.localidadControl.reset()
+        return this.municipioService.getMunicipiosbyEstadoId(value)
       })
+    )
+    .subscribe((data: Municipio[]) => {
+      this.municipios = data
+    },)
 
     this.municipioControl.valueChanges
-      .pipe(
-        filter((value): value is number => value !== null),
-        switchMap((value: number) => {
-          this.localidadControl.reset()
-          return this.localidadService.getLocalidadesbyMunicipioId(value)
-        })
-      ).subscribe({
-        next: (data: Localidad[]) => {
-          this.localidades = data
-        },
+    .pipe(
+      filter((value): value is number => value !== null),
+      switchMap((value: number) => {
+        this.localidadControl.reset()
+        return this.localidadService.getLocalidadesbyMunicipioId(value)
       })
+    )
+    .subscribe((data: Localidad[]) => {
+      this.localidades = data
+    },)
 
     this.localidadControl.valueChanges
-      .pipe(
-        filter((value): value is number => value !== null),
-      ).forEach(element => {
-        this.newlocalidad = element
-      });
+    .pipe(
+      filter((value): value is number => value !== null),
+    )
+    .subscribe(element => {
+      this.newlocalidad = element
+    })
   }
 
-  initForm(cliente: Cliente): void{
+  initForm(domicilio: Domicilio){
     let id_estado = 0
     let id_municipio = 0
-    let id_localidad = 0
-
-    // Form Values of Sexo
-    this.sexoService.getSexos()
-      .subscribe((data: Sexo[]) => {
-        this.sexos = data
-      })
-
-    // Form Values of Estado
-    this.estadoService.getEstados()
-      .subscribe((data: Estado[]) => {
-        this.estados = data
-      })
 
     // Form Values of Localidad, Municipio
     // Initial values of Localidad, Municipio, Estado
-    this.localidadService.getLocalidadbyId(cliente.domicilio.localidad)
+    this.localidadService.getLocalidadbyId(domicilio.localidad)
       .pipe(
         switchMap((data: Localidad) => {
-          id_localidad = data.id
+          this.newlocalidad = data.id
+
           // Form Values of Localidad
           this.localidadService.getLocalidadesbyMunicipioId(data.municipio)
-            .subscribe({
-              next: (data: Localidad[]) => {
-                this.localidades = data
-              }
-            })
+          .subscribe((data: Localidad[]) => {
+            this.localidades = data
+          })
+          
           return this.municipioService.getMunicipiobyId(data.municipio)
         }),
         switchMap((data: Municipio) => {
           id_municipio = data.id
+
           // Form Values of Municipio
           this.municipioService.getMunicipiosbyEstadoId(data.estado)
-            .subscribe({
-              next: (data: Municipio[]) => {
-                this.municipios = data
-              }
-            })
+          .subscribe((data: Municipio[]) => {
+            this.municipios = data
+          })
 
           return this.estadoService.getEstadobyId(data.estado)
         }),
@@ -247,9 +312,11 @@ export class DialogClienteComponent {
       .subscribe({
         next: (data: Estado) => {
           id_estado = data.id
-          this.localidadControl = new FormControl<number | null>(id_localidad, Validators.required)
+          this.localidadControl = new FormControl<number | null>(this.newlocalidad, Validators.required)
           this.municipioControl = new FormControl<number | null>(id_municipio, Validators.required)
           this.estadoControl = new FormControl<number | null>(id_estado, Validators.required)
+
+          this.detectedChanges()
         }
       })
   }
