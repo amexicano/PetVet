@@ -4,6 +4,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CitaService } from '../../../../../../services/cita.service';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-calendar',
@@ -31,7 +32,7 @@ export class CalendarComponent {
     this.selectedValue = new EventEmitter<Date>();
    }
 
-  getDatey = (): void => {
+  getDatey = () => {
     setTimeout(() => { this.selectedValue.emit(this.selectedDate!) }, 50);
   }
   
@@ -58,10 +59,13 @@ export class CalendarComponent {
   }
 
   _filtroDias(date: Date): string {
-    let citas = this.citaService.getCitasByDate(date).length;
-    if (citas == 0) return '';
-    if (citas == 1 || citas == 2) return 'indicador-verde';
-    if (citas == 3 || citas == 4) return 'indicador-amarillo';
-    return 'indicador-rojo';
+    let estado: string = '';
+    this.citaService.getCitasByDate(date)
+    .subscribe(citas => {
+      if (citas.length == 0) estado = '';
+      if (citas.length == 1 || citas.length == 2) estado = 'indicador-verde';
+      if (citas.length == 3 || citas.length == 4) estado = 'indicador-amarillo';
+    })
+    return estado
   }
 }

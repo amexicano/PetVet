@@ -1,16 +1,19 @@
 <h1 mat-dialog-title>Ver Citas {{fecha | date: "dd-MM-yyyy"}}</h1>
-<mat-dialog-content>
-    @if(citas.length == 0){
-        <h3>No hay citas para este día</h3>
-    } @else {
+@if(citas != null){
+    <mat-dialog-content>
+        @if(citas.length == 0){
+            <h3>No hay citas para este día</h3>
+        } @else {
         @for(cita of citas; track cita){
-            <app-mostrar-cita [cita]="cita"></app-mostrar-cita>
+            <app-mostrar-cita [cita]="cita" (updateCita)="update()"></app-mostrar-cita>
         }
-    }
-</mat-dialog-content>
-<mat-dialog-actions>
-    @if(this.accountService.userValue?.tipo == 0  || this.accountService.userValue?.tipo == 1 || this.accountService.userValue?.tipo == 2){
-        <button mat-button color="primary" (click)="crearCita()">Crear Cita Hoy</button>
-    }
-    <button mat-button color="warn" (click)="onNoClick()">Cancelar</button>
-</mat-dialog-actions>
+        }
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        @if(this.accountService.userValue?.tipo == 0 || this.accountService.userValue?.tipo == 1 ||
+        this.accountService.userValue?.tipo == 2 && citas.length == 5){
+            <button mat-button color="primary" (click)="crearCita()">Crear Cita Hoy</button>
+        }
+        <button mat-button color="warn" (click)="onNoClick()">Cancelar</button>
+    </mat-dialog-actions>
+}

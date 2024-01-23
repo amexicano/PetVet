@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Cita } from '../../../../../../interfaces/cita.interface';
 import { MatCardModule } from '@angular/material/card';
@@ -14,6 +14,7 @@ import { Empleado } from '../../../../../../interfaces/empleado.interface';
 import { AccountService } from '../../../../../../services/account.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogCitaComponent } from '../dialog-cita/dialog-cita.component';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-mostrar-cita',
@@ -28,10 +29,13 @@ import { DialogCitaComponent } from '../dialog-cita/dialog-cita.component';
     MatCardModule,
   ],
 })
-export class MostrarCitaComponent {
+export class MostrarCitaComponent implements OnInit{
+  @Output() updateCita = new EventEmitter<void>()
   @Input() cita!: Cita
+
   mascota!: Mascota
   cliente!: Cliente
+  
   estilista1!: Empleado
   estilista2!: Empleado
   estilista3!: Empleado
@@ -46,20 +50,30 @@ export class MostrarCitaComponent {
   }
 
   ngOnInit(): void {
-    this.mascota = this.mascotaService.getMascotasbyId(this.cita.id_mascota)
-    this.cliente = this.clienteService.getClienteById(this.mascota.cliente)
-    this.empleadoService.getEmpleadoById(this.cita.id_estilista1)
-    .subscribe(empleado => {
-      this.estilista1 = empleado
-    })
-    this.empleadoService.getEmpleadoById(this.cita.id_estilista2)
-    .subscribe(empleado => {
-      this.estilista2 = empleado
-    })
-    this.empleadoService.getEmpleadoById(this.cita.id_estilista3)
-    .subscribe(empleado => {
-      this.estilista3 = empleado
-    })
+    if (this.cita != null) {
+      this.mascotaService.getMascotabyId(this.cita.id_mascota)
+        .pipe(
+          switchMap(mascota => {
+            this.mascota = mascota
+            return this.clienteService.getClienteById(this.mascota.cliente)
+          }),
+          switchMap(cliente => {
+            this.cliente = cliente
+            this.empleadoService.getEmpleadoById(this.cita.id_estilista1)
+              .subscribe(empleado => {
+                this.estilista1 = empleado
+              })
+            this.empleadoService.getEmpleadoById(this.cita.id_estilista2)
+              .subscribe(empleado => {
+                this.estilista2 = empleado
+              })
+            return this.empleadoService.getEmpleadoById(this.cita.id_estilista3)
+          })
+        ).subscribe(empleado => {
+          this.estilista3 = empleado
+        })
+    }
+
   }
 
   agendar(cita: Cita): void {
@@ -69,6 +83,7 @@ export class MostrarCitaComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.updateCita.emit()
       console.log('The dialog was closed');
     })
 

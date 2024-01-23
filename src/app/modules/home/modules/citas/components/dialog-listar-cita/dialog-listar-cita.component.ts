@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,9 +27,16 @@ export class DialogListarCitaComponent {
     public citaService: CitaService,
     public accountService: AccountService,
     public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public cita: Cita,
     @Inject(MAT_DIALOG_DATA) public fecha: Date) { 
-      this.citas = this.citaService.getCitasByDate(fecha);
+      this.citaService.getCitasByDate(fecha)
+      .subscribe({
+        next: citas => {
+          this.citas = citas
+        },
+        error: err => {
+          this.citas = []
+        }
+      })
   }
 
   crearCita = (): void => {
@@ -37,7 +44,7 @@ export class DialogListarCitaComponent {
       width: '85%',
       data: { action: 'Crear Cita', cita: {
         id: 0,
-        fecha: new Date(),
+        fecha: this.fecha,
         generado: null,
         hora: 0,
         id_mascota: 0,
@@ -48,8 +55,29 @@ export class DialogListarCitaComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      this.citaService.getCitasByDate(this.fecha)
+        .subscribe({
+          next: citas => {
+            this.citas = citas
+          },
+          error: err => {
+            this.citas = []
+          }
+        })
     })
+  }
+
+  update() {
+    this.citaService.getCitasByDate(this.fecha)
+      .subscribe({
+        next: citas => {
+          this.citas = citas
+        },
+        error: err => {
+          this.citas = []
+        }
+      })
+
   }
   onNoClick(): void {
     this.dialogRef.close();

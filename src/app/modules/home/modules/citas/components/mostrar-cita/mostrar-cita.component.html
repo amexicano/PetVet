@@ -1,35 +1,37 @@
+@if(cita != null){
 <mat-card>
-    <mat-card-header>
-        <mat-card-title>
-            <h1>Cita</h1>
-        </mat-card-title>
-    </mat-card-header>
     <mat-card-content>
-        <p>Creado el: <b>{{cita.generado | date: 'dd/MM/yyyy'}}</b> </p>
-        <p>Fecha de la cita: <b>{{cita.fecha | date: 'dd/MM/yyyy'}}</b> </p>
-        <p>Nombre de la mascota: <b>{{this.mascota.nombre}}</b></p>
-        <p>Nombre del dueño: <b>{{this.cliente.nombre | titlecase}} {{this.cliente.primerApellido | titlecase}} {{this.cliente.segundoApellido | titlecase}}</b></p>
-        <span>Estilistas:</span>
-        <mat-chip-set>
-            @if(cita.id_estilista1){
-                <mat-chip>
-                    <mat-icon>pets</mat-icon>
-                    <span>{{this.estilista1.nombre | titlecase}} {{this.estilista1.primerApellido | titlecase}} {{this.estilista1.segundoApellido | titlecase}}</span>
-                </mat-chip>
-            }
-            @if(cita.id_estilista2){
-                <mat-chip>
-                    <mat-icon>pets</mat-icon>
-                    <span>{{this.estilista2.nombre | titlecase}} {{this.estilista2.primerApellido | titlecase}} {{this.estilista2.segundoApellido | titlecase}}</span>
-                </mat-chip>
-            }
-            @if(cita.id_estilista3){
-                <mat-chip>
-                    <mat-icon>pets</mat-icon>
-                    <span>{{this.estilista3.nombre | titlecase}} {{this.estilista3.primerApellido | titlecase}} {{this.estilista3.segundoApellido | titlecase}}</span>
-                </mat-chip>
-            }
-        </mat-chip-set>
+            <p>Fecha de la cita: <b>{{cita.fecha | date: 'dd/MM/yyyy'}}</b> </p>
+            <p>Nombre de la mascota: <b>{{this.mascota.nombre}}</b></p>
+            <p>Nombre del dueño: <b>{{this.cliente.nombre | titlecase}} {{this.cliente.primerApellido | titlecase}}
+                    {{this.cliente.segundoApellido | titlecase}}</b></p>
+            <span>
+                Estilistas:
+                <mat-chip-set>
+                    @if(cita.id_estilista1){
+                    <mat-chip>
+                        <mat-icon>pets</mat-icon>
+                        <span>{{this.estilista1.nombre | titlecase}} {{this.estilista1.primerApellido | titlecase}}
+                            {{this.estilista1.segundoApellido | titlecase}}</span>
+                    </mat-chip>
+                    }
+                    @if(cita.id_estilista2){
+                    <mat-chip>
+                        <mat-icon>pets</mat-icon>
+                        <span>{{this.estilista2.nombre | titlecase}} {{this.estilista2.primerApellido | titlecase}}
+                            {{this.estilista2.segundoApellido | titlecase}}</span>
+                    </mat-chip>
+                    }
+                    @if(cita.id_estilista3){
+                    <mat-chip>
+                        <mat-icon>pets</mat-icon>
+                        <span>{{this.estilista3.nombre | titlecase}} {{this.estilista3.primerApellido | titlecase}}
+                            {{this.estilista3.segundoApellido | titlecase}}</span>
+                    </mat-chip>
+                    }
+                </mat-chip-set>
+            </span>
+            <p>Creado el: <b>{{cita.generado | date: 'dd/MM/yyyy'}} a las {{cita.generado | date: 'shortTime'}}</b> </p>
     </mat-card-content>
     <mat-card-actions>
         @if(this.accountService.userValue?.tipo == 0 || this.accountService.userValue?.tipo == 1 ||
@@ -38,4 +40,4 @@
         }
     </mat-card-actions>
 </mat-card>
-
+}

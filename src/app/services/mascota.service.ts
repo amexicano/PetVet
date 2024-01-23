@@ -17,7 +17,7 @@ export class MascotaService {
     return this.http.get<Mascota[]>('http://localhost:9090/mascotas')
   }
 
-  getMascotasbyId(id: number) {
+  getMascotabyId(id: number) {
     return this.http.get<Mascota>(`http://localhost:9090/mascotas/${id}`)
   }
 }

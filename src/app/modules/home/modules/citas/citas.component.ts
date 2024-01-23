@@ -23,25 +23,30 @@ import { CommonModule } from '@angular/common';
 })
 
 export class CitasComponent {
-  title = 'Citas';
-  visualizar;
+  visualizar: boolean;
   @ViewChild(CalendarComponent) calendar!: CalendarComponent;
   
   constructor(private accountService: AccountService, 
     public dialog: MatDialog) { 
-      this.visualizar = 
-      this.accountService.userValue?.tipo == 0 || this.accountService.userValue?.tipo == 1 || this.accountService.userValue?.tipo == 2;
-    }
+      this.visualizar =  this.accountService.userValue?.tipo == 0 
+        || this.accountService.userValue?.tipo == 1 
+        || this.accountService.userValue?.tipo == 2;
+  }
 
   nuevaCita = (): void => {
-    const dialogRef = this.dialog.open(DialogCitaComponent, {
+    this.dialog.open(DialogCitaComponent, {
       width: '85%',
-      data: { action: 'Crear Cita', date: null }
+      data: { action: 'Crear Cita', cita: {
+        id: 0,
+        fecha: null,
+        generado: null,
+        hora: 0,
+        id_mascota: 0,
+        id_estilista1: 0,
+        id_estilista2: 0,
+        id_estilista3: 0,
+      } }
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    })
   }
 
   listarCitasDelDia = (todayDate: Date): void => {
@@ -52,7 +57,6 @@ export class CitasComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       this.calendar.selectedDate = null;
-      console.log('The dialog was closed');
     })
   }
 
